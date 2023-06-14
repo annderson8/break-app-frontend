@@ -1,12 +1,12 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Navbar } from "../components/navigation/NavBar";
 import { Footer } from "../components/navigation/Footer";
+import { NavBar } from "../components/navigation/NavBar";
 
 const Layout = (props) => {
   <div>
-    <Navbar />
+    <NavBar />
     <ToastContainer autoClose={5000} />
     {props.children}
     <Footer />
