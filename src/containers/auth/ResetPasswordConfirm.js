@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { reset_password_confirm } from "../../redux/actions/auth";
 import { RotatingLines } from "react-loader-spinner";
 import { Navigate, useParams } from "react-router";
+
 const ResetPasswordConfirm = ({ reset_password_confirm, loading }) => {
   const params = useParams();
 
