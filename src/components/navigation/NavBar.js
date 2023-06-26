@@ -28,12 +28,13 @@ function Navbar({
   get_categories,
   categories,
   get_search_products,
+  total_items
 }) {
   const [redirect, setRedirect] = useState(false);
   const [render, setRender] = useState(false);
   const [formData, setFormData] = useState({
     category_id: 0,
-    search: ''
+    search: "",
   });
   const { category_id, search } = formData;
 
@@ -41,21 +42,18 @@ function Navbar({
     get_categories();
   }, []);
 
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     get_search_products(search, category_id);
     setRender(!render);
+  };
+
+  if (render) {
+    return <Navigate to="/search" />;
   }
-
-
-  if(render){
-    return <Navigate to='/search' />;
-  }
-
-
 
   const logoutHandler = () => {
     logout();
@@ -162,6 +160,15 @@ function Navbar({
               </Link>
             </div>
             <div className="-mr-2 -my-2 md:hidden">
+              <Link
+                to="/cart"
+                className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              >
+                <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                <span className="text-xs absolute top-1 mt-3 ml-4 bg-red-500 text-white font-semibold rounded-full px-2 text-center">
+                  {total_items}
+                </span>
+              </Link>
               <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500">
                 <span className="sr-only">Open menu</span>
                 <Bars3Icon className="h-6 w-6" aria-hidden="true" />
@@ -193,7 +200,7 @@ function Navbar({
                 <Link to="/cart">
                   <ShoppingCartIcon className="h-8 w-8 cursor-pointer text-gray-300 mr-4" />
                   <span className="text-xs absolute top-1 mt-3 ml-4 bg-red-500 text-white font-semibold rounded-full px-2 text-center">
-                    {0}
+                    {total_items}
                   </span>
                 </Link>
                 {isAuthenticated ? authLinks : guestLinks}
@@ -287,10 +294,11 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.Auth.isAuthenticated,
   user: state.Auth.user,
   categories: state.Categories.categories,
+  total_items: state.Cart.total_items
 });
 
 export default connect(mapStateToProps, {
   logout,
   get_categories,
-  get_search_products
+  get_search_products,
 })(Navbar);

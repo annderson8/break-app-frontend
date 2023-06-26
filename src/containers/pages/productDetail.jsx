@@ -21,12 +21,12 @@ import {
 //   filter_reviews
 // } from '../../redux/actions/reviews';
 import { RotatingLines } from "react-loader-spinner";
-// import {
-//     get_items,
-//     add_item,
-//     get_total,
-//     get_item_total
-// } from "../../redux/actions/cart";
+import {
+  get_items,
+  add_item,
+  get_total,
+  get_item_total,
+} from "../../redux/actions/cart";
 import { useEffect, useState } from "react";
 import ImageGallery from "../../components/product/ImageGallery";
 // import WishlistHeart from "../../components/product/WishlistHeart";
@@ -38,10 +38,10 @@ const ProductDetail = ({
   get_product,
   get_related_products,
   product,
-  // get_items,
-  // add_item,
-  // get_total,
-  // get_item_total,
+  get_items,
+  add_item,
+  get_total,
+  get_item_total,
   // add_wishlist_item,
   // get_wishlist_items,
   // get_wishlist_item_total,
@@ -62,15 +62,20 @@ const ProductDetail = ({
   const navigate = useNavigate();
 
   const addToCart = async () => {
-    //   if (product && product !== null && product !== undefined && product.quantity > 0) {
-    //       setLoading(true)
-    //       await add_item(product);
-    //       await get_items();
-    //       await get_total();
-    //       await get_item_total();
-    //       setLoading(false)
-    //       navigate('/cart')
-    //   }
+    if (
+      product &&
+      product !== null &&
+      product !== undefined &&
+      product.quantity > 0
+    ) {
+      setLoading(true);
+      await add_item(product);
+      await get_items();
+      await get_total();
+      await get_item_total();
+      setLoading(false);
+      navigate("/cart");
+    }
   };
 
   const addToWishlist = async () => {
@@ -423,10 +428,10 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   get_product,
   get_related_products,
-  // get_items,
-  // add_item,
-  // get_total,
-  // get_item_total,
+  get_items,
+  add_item,
+  get_total,
+  get_item_total,
   // add_wishlist_item,
   // get_wishlist_items,
   // get_wishlist_item_total,
