@@ -18,47 +18,58 @@ import {
   RESET_PASSWORD_FAIL,
   RESET_PASSWORD_CONFIRM_SUCCESS,
   RESET_PASSWORD_CONFIRM_FAIL,
-  LOGOUT
-
+  LOGOUT,
 } from "./types";
 import { setAlert } from "./alert";
 
-export const check_authenticated = () => async dispatch => {
-    if(localStorage.getItem('access')){
-        const config = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
+import { get_items, get_total, get_item_total, synch_cart } from "./cart";
 
-        const body = JSON.stringify({
-            token: localStorage.getItem('access')
-        });
+import {
+  get_wishlist_item,
+  get_wishlist_item_total,
+  clear_wishlist,
+} from "./wishlist";
 
-        try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/verify/`, body, config);
+export const check_authenticated = () => async (dispatch) => {
+  if (localStorage.getItem("access")) {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
 
-            if (res.status === 200) {
-                dispatch({
-                    type: AUTHENTICATED_SUCCESS
-                });
-            } else {
-                dispatch({
-                    type: AUTHENTICATED_FAIL
-                });
-            }
-        } catch(err){
-            dispatch({
-                type: AUTHENTICATED_FAIL
-            });
-        }
-    } else {
+    const body = JSON.stringify({
+      token: localStorage.getItem("access"),
+    });
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/jwt/verify/`,
+        body,
+        config
+      );
+
+      if (res.status === 200) {
         dispatch({
-            type: AUTHENTICATED_FAIL
+          type: AUTHENTICATED_SUCCESS,
         });
+      } else {
+        dispatch({
+          type: AUTHENTICATED_FAIL,
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: AUTHENTICATED_FAIL,
+      });
     }
-}
+  } else {
+    dispatch({
+      type: AUTHENTICATED_FAIL,
+    });
+  }
+};
 
 export const signup =
   (first_name, last_name, email, password, re_password) => async (dispatch) => {
@@ -190,6 +201,9 @@ export const login = (email, password) => async (dispatch) => {
         type: REMOVE_AUTH_LOADING,
       });
       dispatch(setAlert("Inicio de sesión con éxito", "green"));
+      dispatch(synch_cart());
+      dispatch(get_wishlist_item());
+      dispatch(get_wishlist_item_total);
     } else {
       dispatch({
         type: LOGIN_FAIL,
@@ -260,151 +274,167 @@ export const activate = (uid, token) => async (dispatch) => {
   }
 };
 
-export const refresh = () => async dispatch => {
-    if (localStorage.getItem('refresh')) {
-        const config = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
+export const refresh = () => async (dispatch) => {
+  if (localStorage.getItem("refresh")) {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
 
-        const body = JSON.stringify({
-            refresh: localStorage.getItem('refresh')
-        });
+    const body = JSON.stringify({
+      refresh: localStorage.getItem("refresh"),
+    });
 
-        try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/refresh/`, body, config);
-            
-            if (res.status === 200) {
-                dispatch({
-                    type: REFRESH_SUCCESS,
-                    payload: res.data
-                });
-            } else {
-                dispatch({
-                    type: REFRESH_FAIL
-                });
-            }
-        }catch(err){
-            dispatch({
-                type: REFRESH_FAIL
-            });
-        }
-    } else {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/jwt/refresh/`,
+        body,
+        config
+      );
+
+      if (res.status === 200) {
         dispatch({
-            type: REFRESH_FAIL
+          type: REFRESH_SUCCESS,
+          payload: res.data,
         });
+      } else {
+        dispatch({
+          type: REFRESH_FAIL,
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: REFRESH_FAIL,
+      });
     }
-}
+  } else {
+    dispatch({
+      type: REFRESH_FAIL,
+    });
+  }
+};
 
-export const reset_password = (email) => async dispatch => {
+export const reset_password = (email) => async (dispatch) => {
   dispatch({
-      type: SET_AUTH_LOADING
+    type: SET_AUTH_LOADING,
   });
 
   const config = {
-      headers: {
-          'Content-Type': 'application/json'
-      }
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
 
   const body = JSON.stringify({ email });
 
-  try{
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
-      
-      if (res.status === 204) {
-          dispatch({
-              type: RESET_PASSWORD_SUCCESS
-          });
-          dispatch({
-              type: REMOVE_AUTH_LOADING
-          });
-          dispatch(setAlert('Password reset email sent', 'green'));
-      } else {
-          dispatch({
-              type: RESET_PASSWORD_FAIL
-          });
-          dispatch({
-              type: REMOVE_AUTH_LOADING
-          });
-          dispatch(setAlert('Error sending password reset email', 'red'));
-      }
-  }
-  catch(err){
+  try {
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/auth/users/reset_password/`,
+      body,
+      config
+    );
+
+    if (res.status === 204) {
       dispatch({
-          type: RESET_PASSWORD_FAIL
+        type: RESET_PASSWORD_SUCCESS,
       });
       dispatch({
-          type: REMOVE_AUTH_LOADING
+        type: REMOVE_AUTH_LOADING,
       });
-      dispatch(setAlert('Error sending password reset email', 'red'));
+      dispatch(setAlert("Password reset email sent", "green"));
+    } else {
+      dispatch({
+        type: RESET_PASSWORD_FAIL,
+      });
+      dispatch({
+        type: REMOVE_AUTH_LOADING,
+      });
+      dispatch(setAlert("Error sending password reset email", "red"));
+    }
+  } catch (err) {
+    dispatch({
+      type: RESET_PASSWORD_FAIL,
+    });
+    dispatch({
+      type: REMOVE_AUTH_LOADING,
+    });
+    dispatch(setAlert("Error sending password reset email", "red"));
   }
-}
+};
 
-export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
-  dispatch({
-      type: SET_AUTH_LOADING
-  });
+export const reset_password_confirm =
+  (uid, token, new_password, re_new_password) => async (dispatch) => {
+    dispatch({
+      type: SET_AUTH_LOADING,
+    });
 
-  const config = {
+    const config = {
       headers: {
-          'Content-Type': 'application/json'
-      }
-  };
+        "Content-Type": "application/json",
+      },
+    };
 
-  const body = JSON.stringify({
+    const body = JSON.stringify({
       uid,
       token,
       new_password,
-      re_new_password
-  });
-
-  if (new_password !== re_new_password) {
-      dispatch({
-          type: RESET_PASSWORD_CONFIRM_FAIL
-      });
-      dispatch({
-          type: REMOVE_AUTH_LOADING
-      });
-      dispatch(setAlert('Passwords do not match', 'red'));
-  } else {
-      try {
-          const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password_confirm/`, body, config);
-      
-          if (res.status === 204) {
-              dispatch({
-                  type: RESET_PASSWORD_CONFIRM_SUCCESS
-              });
-              dispatch({
-                  type: REMOVE_AUTH_LOADING
-              });
-              dispatch(setAlert('Password has been reset successfully', 'green'));
-          } else {
-              dispatch({
-                  type: RESET_PASSWORD_CONFIRM_FAIL
-              });
-              dispatch({
-                  type: REMOVE_AUTH_LOADING
-              });
-              dispatch(setAlert('Error resetting your password', 'red'));
-          }
-      } catch(err){
-          dispatch({
-              type: RESET_PASSWORD_CONFIRM_FAIL
-          });
-          dispatch({
-              type: REMOVE_AUTH_LOADING
-          });
-          dispatch(setAlert('Error resetting your password', 'red'));
-      }
-  }
-}
-
-export const logout = () => dispatch => {
-    dispatch({
-        type: LOGOUT
+      re_new_password,
     });
-    dispatch(setAlert('Succesfully logged out', 'green'));
-}
+
+    if (new_password !== re_new_password) {
+      dispatch({
+        type: RESET_PASSWORD_CONFIRM_FAIL,
+      });
+      dispatch({
+        type: REMOVE_AUTH_LOADING,
+      });
+      dispatch(setAlert("Passwords do not match", "red"));
+    } else {
+      try {
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_URL}/auth/users/reset_password_confirm/`,
+          body,
+          config
+        );
+
+        if (res.status === 204) {
+          dispatch({
+            type: RESET_PASSWORD_CONFIRM_SUCCESS,
+          });
+          dispatch({
+            type: REMOVE_AUTH_LOADING,
+          });
+          dispatch(setAlert("Password has been reset successfully", "green"));
+        } else {
+          dispatch({
+            type: RESET_PASSWORD_CONFIRM_FAIL,
+          });
+          dispatch({
+            type: REMOVE_AUTH_LOADING,
+          });
+          dispatch(setAlert("Error resetting your password", "red"));
+        }
+      } catch (err) {
+        dispatch({
+          type: RESET_PASSWORD_CONFIRM_FAIL,
+        });
+        dispatch({
+          type: REMOVE_AUTH_LOADING,
+        });
+        dispatch(setAlert("Error resetting your password", "red"));
+      }
+    }
+  };
+
+export const logout = () => (dispatch) => {
+  dispatch({
+    type: LOGOUT,
+  });
+  dispatch(setAlert("Succesfully logged out", "green"));
+  dispatch(get_items());
+  dispatch(get_item_total());
+  dispatch(get_total());
+  dispatch(clear_wishlist());
+};
