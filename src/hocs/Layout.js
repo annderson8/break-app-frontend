@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { check_authenticated, load_user, refresh } from "../redux/actions/auth";
 
 import { get_items, get_total, get_item_total } from "../redux/actions/cart";
+import { get_user_profile } from "../redux/actions/profile";
 
 import { Footer } from "../components/navigation/Footer";
 import Navbar from "../components/navigation/Navbar";
@@ -19,6 +20,7 @@ const Layout = (props) => {
     props.get_items();
     props.get_total();
     props.get_item_total();
+    props.get_user_profile();
   }, []);
 
   return (
@@ -37,5 +39,6 @@ export default connect(null, {
   refresh,
   get_items,
   get_total,
-  get_item_total
+  get_item_total,
+  get_user_profile
 })(Layout);
