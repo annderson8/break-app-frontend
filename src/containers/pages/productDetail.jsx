@@ -2,12 +2,12 @@ import Layout from "../../hocs/Layout";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import {
-//   add_wishlist_item,
-//   get_wishlist_items,
-//   get_wishlist_item_total ,
-//   remove_wishlist_item
-// } from '../../redux/actions/wishlist';
+import {
+  add_wishlist_item,
+  get_wishlist_items,
+  get_wishlist_item_total ,
+  remove_wishlist_item
+} from '../../redux/actions/wishlist';
 import {
   get_product,
   get_related_products,
@@ -29,7 +29,7 @@ import {
 } from "../../redux/actions/cart";
 import { useEffect, useState } from "react";
 import ImageGallery from "../../components/product/ImageGallery";
-// import WishlistHeart from "../../components/product/WishlistHeart";
+import WishlistHeart from "../../components/product/WishlistHeart"; 
 import { Navigate } from "react-router";
 
 // import Stars from '../../components/product/Stars'
@@ -42,12 +42,12 @@ const ProductDetail = ({
   add_item,
   get_total,
   get_item_total,
-  // add_wishlist_item,
-  // get_wishlist_items,
-  // get_wishlist_item_total,
+  add_wishlist_item,
+  get_wishlist_items,
+  get_wishlist_item_total,
   isAuthenticated,
-  // remove_wishlist_item,
-  // wishlist,
+  remove_wishlist_item,
+  wishlist,
   // get_reviews,
   // get_review,
   // create_review,
@@ -79,41 +79,41 @@ const ProductDetail = ({
   };
 
   const addToWishlist = async () => {
-    //   if (isAuthenticated) {
-    //     let isPresent = false;
-    //     if(
-    //       wishlist &&
-    //       wishlist !== null &&
-    //       wishlist !== undefined &&
-    //       product &&
-    //       product !== null &&
-    //       product !== undefined
-    //       ){
-    //         wishlist.map(item => {
-    //             if (item.product.id.toString() === product.id.toString()) {
-    //                 isPresent = true;
-    //             }
-    //         });
+      if (isAuthenticated) {
+        let isPresent = false;
+        if(
+          wishlist &&
+          wishlist !== null &&
+          wishlist !== undefined &&
+          product &&
+          product !== null &&
+          product !== undefined
+          ){
+            wishlist.map(item => {
+                if (item.product.id.toString() === product.id.toString()) {
+                    isPresent = true;
+                }
+            });
   };
 
-  //     if (isPresent) {
-  //       await remove_wishlist_item(product.id);
-  //       await get_wishlist_items();
-  //       await get_wishlist_item_total();
-  //     } else {
-  //       await remove_wishlist_item(product.id);
-  //         await add_wishlist_item(product.id);
-  //         await get_wishlist_items();
-  //         await get_wishlist_item_total();
-  //         await get_items();
-  //         await get_total();
-  //         await get_item_total();
-  //     }
+      if (isPresent) {
+        await remove_wishlist_item(product.id);
+        await get_wishlist_items();
+        await get_wishlist_item_total();
+      } else {
+        await remove_wishlist_item(product.id);
+          await add_wishlist_item(product.id);
+          await get_wishlist_items();
+          await get_wishlist_item_total();
+          await get_items();
+          await get_total();
+          await get_item_total();
+      }
 
-  //   } else {
-  //     return <Navigate to="/cart"/>
-  //   }
-  // };
+    } else {
+      return <Navigate to="/cart"/>
+    }
+  };
 
   const params = useParams();
   const productId = params.productId;
@@ -122,8 +122,8 @@ const ProductDetail = ({
     window.scrollTo(0, 0);
     get_product(productId);
     get_related_products(productId);
-    // get_wishlist_items()
-    // get_wishlist_item_total()
+    get_wishlist_items()
+    get_wishlist_item_total()
   }, []);
 
   // useEffect(() => {
@@ -240,11 +240,11 @@ const ProductDetail = ({
                     </button>
                   )}
 
-                  {/* <WishlistHeart 
+                  <WishlistHeart 
                 product={product}
                 wishlist={wishlist}
                 addToWishlist={addToWishlist}
-                /> */}
+                />
                 </div>
               </div>
             </div>
@@ -420,7 +420,7 @@ const ProductDetail = ({
 const mapStateToProps = (state) => ({
   product: state.Products.product,
   isAuthenticated: state.Auth.isAuthenticated,
-  // wishlist: state.Wishlist.wishlist,
+  wishlist: state.Wishlist.wishlist,
   // review: state.Reviews.review,
   // reviews: state.Reviews.reviews
 });
@@ -432,10 +432,10 @@ export default connect(mapStateToProps, {
   add_item,
   get_total,
   get_item_total,
-  // add_wishlist_item,
-  // get_wishlist_items,
-  // get_wishlist_item_total,
-  // remove_wishlist_item,
+  add_wishlist_item,
+  get_wishlist_items,
+  get_wishlist_item_total,
+  remove_wishlist_item,
   // get_reviews,
   // get_review,
   // create_review,
