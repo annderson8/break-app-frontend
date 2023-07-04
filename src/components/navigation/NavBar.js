@@ -153,7 +153,6 @@ function Navbar({
         <div className="relative z-20">
           <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-5 sm:px-6 sm:py-4 lg:px-8 md:justify-start md:space-x-10">
             <div>
-              <Link></Link>
               <Link to="/" className="flex">
                 <span className="sr-only">Break</span>
                 <img className="h-8 w-auto sm:h-10" src={logo_break} alt="" />
@@ -249,12 +248,6 @@ function Navbar({
                     Store
                   </Link>
 
-                  <a
-                    href="#"
-                    className="rounded-md text-base font-medium text-gray-900 hover:text-gray-700"
-                  >
-                    Docs
-                  </a>
                 </div>
                 <div className="mt-6">
                   {isAuthenticated ? (
@@ -262,22 +255,22 @@ function Navbar({
                       to="/dashboard"
                       className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-zinc-600 hover:bg-zinc-700"
                     >
-                      Sign up
+                      Dashboard
                     </Link>
                   ) : (
-                    <a
-                      href="#"
+                    <Link
+                      to="/signup"
                       className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-zinc-600 hover:bg-zinc-700"
                     >
                       Sign up
-                    </a>
+                    </Link>
                   )}
 
                   <p className="mt-6 text-center text-base font-medium text-gray-500">
                     Existing customer?{" "}
-                    <a href="#" className=" hover:text-zinc-500 text-zinc-700">
+                    <Link to="/signin" className=" hover:text-zinc-500 text-zinc-700">
                       Sign in
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
