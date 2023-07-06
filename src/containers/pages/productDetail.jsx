@@ -293,9 +293,9 @@ const ProductDetail = ({
                     </div>
                   </div>
                   {
-                    review.comment &&
-                    review.comment !== null &&
-                    review.comment !== undefined &&
+                    review &&
+                    review !== null &&
+                    review !== undefined &&
                     isAuthenticated ? (
                     <form onSubmit={(e) => updateReview(e)}>
                       <div>

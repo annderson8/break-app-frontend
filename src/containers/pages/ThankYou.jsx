@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
+
 import Layout from '../../hocs/Layout'
 import { connect } from 'react-redux'
 import { Navigate } from 'react-router';
+import QueryString from 'query-string';
+import { useLocation } from 'react-router-dom';
+
 import { reset } from '../../redux/actions/payment';
-import { useEffect } from 'react';
+
 
 const ThankYou = ({
     isAuthenticated,
@@ -13,8 +18,29 @@ const ThankYou = ({
         reset()
     }, [])
 
-    if(!isAuthenticated)
-        return <Navigate to='/' />;
+    const location = useLocation();
+
+    useEffect(() => {
+		// Check to see if this is a redirect back from Checkout
+		// const query = new URLSearchParams(window.location.search);
+		const values = QueryString.parse(location.search);
+    
+        
+		if (values.success) {
+			console.log(
+				'Order placed! You will receive an email confirmation.'
+			);
+		}
+
+		if (values.canceled) {
+			console.log(
+				"Order canceled -- continue to shop around and checkout when you're ready."
+			);
+		}
+	}, []);
+
+    // if(!isAuthenticated)
+    //     return <Navigate to='/' />;
 
     return(
         <Layout>

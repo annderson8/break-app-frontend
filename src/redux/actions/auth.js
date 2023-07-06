@@ -25,7 +25,7 @@ import { setAlert } from "./alert";
 import { get_items, get_total, get_item_total, synch_cart } from "./cart";
 
 import {
-  get_wishlist_item,
+  get_wishlist_items,
   get_wishlist_item_total,
   clear_wishlist,
 } from "./wishlist";
@@ -202,7 +202,7 @@ export const login = (email, password) => async (dispatch) => {
       });
       dispatch(setAlert("Inicio de sesión con éxito", "green"));
       dispatch(synch_cart());
-      dispatch(get_wishlist_item());
+      dispatch(get_wishlist_items());
       dispatch(get_wishlist_item_total);
     } else {
       dispatch({

@@ -54,7 +54,7 @@ const CartItem = ({
             <img
                 src={item.product.photo}
                 alt=""
-                className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
+                className="w-24 h-24 rounded-md object-center object-cover sm:w-36 sm:h-36"
             />
             </div>
 
@@ -70,6 +70,7 @@ const CartItem = ({
                 </div>
 
                 <p className="mt-1 text-sm font-medium text-gray-900">$ {item.product.price}</p>
+
                 </div>
 
                 <div className="mt-4 sm:mt-0 sm:pr-9">

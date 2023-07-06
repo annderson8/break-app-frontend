@@ -12,6 +12,7 @@ const ShippingForm = ({
     countries,
     onChange,
     buy,
+    buy_stripe,
     user,
     renderShipping,
     total_amount,
@@ -140,7 +141,8 @@ const ShippingForm = ({
 
             </dl>
 
-            <form onSubmit={e => buy(e)}>
+            {/* <form onSubmit={e => buy(e)}> */}
+            <form onSubmit={e => buy_stripe(e)}>
                 <div className=" px-4 py-5  mt-4 sm:px-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">Shipping Address:</h3>
                 </div>

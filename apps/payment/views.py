@@ -9,7 +9,14 @@ from apps.orders.models import Order, OrderItem
 from apps.product.models import Product
 from apps.shipping.models import Shipping
 from django.core.mail import send_mail
+from django.conf import settings
+
+from django.shortcuts import redirect
+
 import braintree
+import stripe
+
+stripe.api_key=settings.STRIPE_SECRET_KEY
 
 gateway = braintree.BraintreeGateway(
     braintree.Configuration(
@@ -19,6 +26,28 @@ gateway = braintree.BraintreeGateway(
         private_key=settings.BT_PRIVATE_KEY
     )
 )
+
+
+class CreatePaymentIntentView(APIView):
+    def post(self, request, format=None):
+        user = self.request.user
+        data = self.request.data
+
+        try:
+            intent = stripe.PaymentIntent.create(
+                amount=160000,
+                currency='aud',
+                automatic_payment_methods={
+                'enabled': True,
+            },
+            )
+            return Response(
+                {'client_secret': intent.client_secret},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': str(e)})
+
 
 class GenerateTokenView(APIView):
     def get(self, request, format=None):
@@ -51,13 +80,13 @@ class GetPaymentTotalView(APIView):
         try:
             cart = Cart.objects.get(user=user)
 
-            #revisar si existen iitems
+            # revisar si existen iitems
             if not CartItem.objects.filter(cart=cart).exists():
                 return Response(
                     {'error': 'Need to have items in cart'},
                     status=status.HTTP_404_NOT_FOUND
                 )
-            
+
             cart_items = CartItem.objects.filter(cart=cart)
 
             for cart_item in cart_items:
@@ -71,29 +100,29 @@ class GetPaymentTotalView(APIView):
                         {'error': 'Not enough items in stock'},
                         status=status.HTTP_200_OK
                     )
-                
+
                 total_amount = 0.0
                 total_compare_amount = 0.0
 
                 for cart_item in cart_items:
                     total_amount += (float(cart_item.product.price)
-                                    * float(cart_item.count))
+                                     * float(cart_item.count))
                     total_compare_amount += (float(cart_item.product.compare_price)
-                                            * float(cart_item.count))
+                                             * float(cart_item.count))
 
                 total_compare_amount = round(total_compare_amount, 2)
                 original_price = round(total_amount, 2)
 
                 # Cupones
 
-                total_after_coupon  = 0.0
+                total_after_coupon = 0.0
 
                 if coupon_name != '':
-                    #Revisar si cupon de precio fijo es valido
+                    # Revisar si cupon de precio fijo es valido
                     if FixedPriceCoupon.objects.filter(name__iexact=coupon_name).exists():
                         fixed_price_coupon = FixedPriceCoupon.objects.get(
-                        name=coupon_name
-                    )
+                            name=coupon_name
+                        )
                     discount_amount = float(fixed_price_coupon.discount_price)
                     if discount_amount < total_amount:
                         total_amount -= discount_amount
@@ -108,10 +137,10 @@ class GetPaymentTotalView(APIView):
 
                         if discount_percentage > 1 and discount_percentage < 100:
                             total_amount -= (total_amount *
-                                            (discount_percentage / 100))
+                                             (discount_percentage / 100))
                             total_after_coupon = total_amount
 
-                #Total despues del cupon 
+                # Total despues del cupon
                 total_after_coupon = round(total_after_coupon, 2)
 
                 # Impuesto estimado
@@ -126,7 +155,6 @@ class GetPaymentTotalView(APIView):
                     shipping = Shipping.objects.get(id=shipping_id)
                     shipping_cost = shipping.price
                     total_amount += float(shipping_cost)
-                
 
                 total_amount = round(total_amount, 2)
 
@@ -174,16 +202,16 @@ class ProcessPaymentView(APIView):
                 {'error': 'Invalid shipping option'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         cart = Cart.objects.get(user=user)
 
-        #revisar si usuario tiene items en carrito
+        # revisar si usuario tiene items en carrito
         if not CartItem.objects.filter(cart=cart).exists():
             return Response(
                 {'error': 'Need to have items in cart'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         cart_items = CartItem.objects.filter(cart=cart)
 
         # revisar si hay stock
@@ -199,13 +227,13 @@ class ProcessPaymentView(APIView):
                     {'error': 'Not enough items in stock'},
                     status=status.HTTP_200_OK
                 )
-        
+
         total_amount = 0.0
 
         for cart_item in cart_items:
             total_amount += (float(cart_item.product.price)
                              * float(cart_item.count))
-        
+
         # Cupones
         if coupon_name != '':
             if FixedPriceCoupon.objects.filter(name__iexact=coupon_name).exists():
@@ -216,7 +244,7 @@ class ProcessPaymentView(APIView):
 
                 if discount_amount < total_amount:
                     total_amount -= discount_amount
-            
+
             elif PercentageCoupon.objects.filter(name__iexact=coupon_name).exists():
                 percentage_coupon = PercentageCoupon.objects.get(
                     name=coupon_name
@@ -255,23 +283,23 @@ class ProcessPaymentView(APIView):
                 {'error': 'Error processing the transaction'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
+
         if newTransaction.is_success or newTransaction.transaction:
             for cart_item in cart_items:
                 update_product = Product.objects.get(id=cart_item.product.id)
 
-                #encontrar cantidad despues de coompra
+                # encontrar cantidad despues de coompra
                 quantity = int(update_product.quantity) - int(cart_item.count)
 
-                #obtener cantidad de producto por vender
+                # obtener cantidad de producto por vender
                 sold = int(update_product.sold) + int(cart_item.count)
 
-                #actualizar el producto
+                # actualizar el producto
                 Product.objects.filter(id=cart_item.product.id).update(
                     quantity=quantity, sold=sold
                 )
-            
-            #crear orden
+
+            # crear orden
             try:
                 order = Order.objects.create(
                     user=user,
@@ -294,7 +322,7 @@ class ProcessPaymentView(APIView):
                     {'error': 'Transaction succeeded but failed to create the order'},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
-            
+
             for cart_item in cart_items:
                 try:
                     # agarrar el producto
@@ -343,7 +371,7 @@ class ProcessPaymentView(APIView):
                     {'error': 'Transaction succeeded and order successful, but failed to clear cart'},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
-            
+
             return Response(
                 {'success': 'Transaction successful and order was created'},
                 status=status.HTTP_200_OK

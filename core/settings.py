@@ -214,8 +214,8 @@ BT_PRIVATE_KEY = os.environ.get('BT_PRIVATE_KEY')
 # Stripe settings
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-STRIPE_WEBHOOK_SECRET= os.environ.get('STRIPE_WEBHOOK_SECRET')
 
+SITE_URL = 'http://localhost:3000/thanyou'
 
 AUTH_USER_MODEL = "user.UserAccount"
 
@@ -230,6 +230,8 @@ if not DEBUG:
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
     EMAIL_PORT = env('EMAIL_PORT')
     EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+
+
 
 
 

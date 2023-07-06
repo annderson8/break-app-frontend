@@ -7,20 +7,29 @@ import { setAlert } from "../../redux/actions/alert";
 import { update_item, remove_item } from "../../redux/actions/cart";
 import { useEffect, useState } from "react";
 import { get_shipping_options } from "../../redux/actions/shipping";
-import {check_coupon} from '../../redux/actions/coupons'
+import { check_coupon } from "../../redux/actions/coupons";
 import { refresh } from "../../redux/actions/auth";
 
 import {
   get_payment_total,
   get_client_token,
-  process_payment
-} from '../../redux/actions/payment';
+  process_payment,
+  process_payment_stripe,
+} from "../../redux/actions/payment";
 
 import DropIn from "braintree-web-drop-in-react";
 
 import { RotatingLines } from "react-loader-spinner";
 import { countries } from "../../helpers/fixedCountries";
 import ShippingForm from "../../components/checkout/ShippingForm";
+import { AtSymbolIcon } from "@heroicons/react/24/solid";
+
+
+import { Elements } from "@stripe/react-stripe-js";
+
+import CheckoutForm from "../../components/checkout/CheckoutForm";
+
+import { loadStripe } from "@stripe/stripe-js";
 
 const Checkout = ({
   isAuthenticated,
@@ -34,6 +43,7 @@ const Checkout = ({
   get_payment_total,
   get_client_token,
   process_payment,
+  process_payment_stripe,
   user,
   total_items,
   clientToken,
@@ -46,8 +56,30 @@ const Checkout = ({
   estimated_tax,
   shipping_cost,
   check_coupon,
-  coupon
+  coupon,
+  clientSecret,
 }) => {
+
+  useEffect(() => {
+    const amount = 200;
+    process_payment_stripe(amount);
+  }, []);
+
+  const stripePromise = loadStripe(
+    "pk_test_51NQ46oJG3NL7E2w0pNoWwTY8JUsyKIBuMf1A8J07fkq5Ofvdra4m3FDKAp8MhipFg2wcs4IfeElADFT7QPO6Mo4f008rLaWjsu"
+  );
+
+  const appearance = {
+    theme: 'flat',
+    variables: { colorPrimaryText: '#16A34A' }
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
+    business: "RocketRides"
+  };
+
   const [formData, setFormData] = useState({
     full_name: "",
     address_line_1: "",
@@ -57,7 +89,7 @@ const Checkout = ({
     postal_zip_code: "",
     country_region: "Australia",
     telephone_number: "",
-    coupon_name: '',
+    coupon_name: "",
     shipping_id: 0,
   });
 
@@ -81,43 +113,59 @@ const Checkout = ({
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const buy = async e => {
-      e.preventDefault();
-      let nonce = await data.instance.requestPaymentMethod();
-      if (coupon && coupon !== null && coupon !== undefined) {
-        process_payment(
-            nonce,
-            shipping_id,
-            coupon.name,
-            full_name,
-            address_line_1,
-            address_line_2,
-            city,
-            state_province_region,
-            postal_zip_code,
-            country_region,
-            telephone_number
-        );
-      } else {
-        process_payment(
-            nonce,
-            shipping_id,
-            '',
-            full_name,
-            address_line_1,
-            address_line_2,
-            city,
-            state_province_region,
-            postal_zip_code,
-            country_region,
-            telephone_number
-        );
-    }
-  }
-
-  const apply_coupon = async e => {
+  const buy_stripe = async (e) => {
     e.preventDefault();
-      check_coupon(coupon_name);
+    process_payment(
+      shipping_id,
+      "",
+      full_name,
+      address_line_1,
+      address_line_2,
+      city,
+      state_province_region,
+      postal_zip_code,
+      country_region,
+      telephone_number
+    );
+  };
+
+  const buy = async (e) => {
+    e.preventDefault();
+    let nonce = await data.instance.requestPaymentMethod();
+    if (coupon && coupon !== null && coupon !== undefined) {
+      process_payment(
+        nonce,
+        shipping_id,
+        coupon.name,
+        full_name,
+        address_line_1,
+        address_line_2,
+        city,
+        state_province_region,
+        postal_zip_code,
+        country_region,
+        telephone_number
+      );
+    } else {
+      process_payment(
+        nonce,
+        shipping_id,
+        "",
+        full_name,
+        address_line_1,
+        address_line_2,
+        city,
+        state_province_region,
+        postal_zip_code,
+        country_region,
+        telephone_number
+      );
+    }
+  };
+
+  const apply_coupon = async (e) => {
+    e.preventDefault();
+    check_coupon(coupon_name);
   };
 
   useEffect(() => {
@@ -131,9 +179,8 @@ const Checkout = ({
 
   useEffect(() => {
     if (coupon && coupon !== null && coupon !== undefined)
-        get_payment_total(shipping_id, coupon.name);
-    else
-        get_payment_total(shipping_id, 'default');
+      get_payment_total(shipping_id, coupon.name);
+    else get_payment_total(shipping_id, "default");
   }, [shipping_id, coupon]);
 
   const [render, setRender] = useState(false);
@@ -152,6 +199,7 @@ const Checkout = ({
             return (
               <div key={index}>
                 <CartItem
+                  inCart={false}
                   item={item}
                   count={count}
                   update_item={update_item}
@@ -214,7 +262,7 @@ const Checkout = ({
     } else {
       return (
         <>
-          <DropIn
+          {/* <DropIn
             options={{
               authorization: clientToken,
               paypal: {
@@ -222,7 +270,7 @@ const Checkout = ({
               },
             }}
             onInstance={(instance) => (data.instance = instance)}
-          />
+          /> */}
           <div className="mt-6">
             {loading ? (
               <button className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">
@@ -281,6 +329,7 @@ const Checkout = ({
               countries={countries}
               onChange={onChange}
               buy={buy}
+              buy_stripe={buy_stripe}
               user={user}
               renderShipping={renderShipping}
               total_amount={total_amount}
@@ -295,6 +344,11 @@ const Checkout = ({
               apply_coupon={apply_coupon}
               coupon_name={coupon_name}
             />
+            {clientSecret && (
+              <Elements options={options} stripe={stripePromise}>
+                <CheckoutForm clientSecret={clientSecret} />
+              </Elements>
+            )}
           </div>
         </div>
       </div>
@@ -308,6 +362,7 @@ const mapStateToProps = (state) => ({
   total_items: state.Cart.total_items,
   shipping: state.Shipping.shipping,
   clientToken: state.Payment.clientToken,
+  clientSecret: state.Payment.clientSecret,
   made_payment: state.Payment.made_payment,
   loading: state.Payment.loading,
   original_price: state.Payment.original_price,
@@ -328,5 +383,6 @@ export default connect(mapStateToProps, {
   get_payment_total,
   get_client_token,
   process_payment,
-  check_coupon
+  process_payment_stripe,
+  check_coupon,
 })(Checkout);
