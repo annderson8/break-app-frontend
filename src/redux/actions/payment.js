@@ -16,7 +16,7 @@ import {
 } from "./types";
 
 export const get_payment_total =
-  (shipping_id, coupon_name) => async (dispatch) => {
+  (coupon_name) => async (dispatch) => {
     const config = {
       headers: {
         Accept: "application/json",
@@ -26,7 +26,7 @@ export const get_payment_total =
 
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/payment/get-payment-total?shipping_id=${shipping_id}&coupon_name=${coupon_name}`,
+        `${process.env.REACT_APP_API_URL}/api/payment/get-payment-total?coupon_name=${coupon_name}`,
         config
       );
 
@@ -77,7 +77,7 @@ export const get_client_token = () => async (dispatch) => {
   }
 };
 
-export const process_payment_stripe = (amount) => async (dispatch) => {
+export const process_payment_stripe = (amount, coupon_name, shipping_id) => async (dispatch) => {
     const config = {
         headers: {
           Accept: "application/json",
@@ -88,8 +88,10 @@ export const process_payment_stripe = (amount) => async (dispatch) => {
 
   const body = JSON.stringify({
     amount,
+    coupon_name,
+    shipping_id
   });
-
+  console.log(body);
   try {
     const res = await axios.post(
       `${process.env.REACT_APP_API_URL}/api/payment/create-payment-intent`,
@@ -119,17 +121,9 @@ export const process_payment_stripe = (amount) => async (dispatch) => {
 
 export const process_payment =
   (
-    nonce,
+
     shipping_id,
     coupon_name,
-    full_name,
-    address_line_1,
-    address_line_2,
-    city,
-    state_province_region,
-    postal_zip_code,
-    country_region,
-    telephone_number
   ) =>
   async (dispatch) => {
     const config = {
@@ -141,17 +135,8 @@ export const process_payment =
     };
 
     const body = JSON.stringify({
-      nonce,
       shipping_id,
       coupon_name,
-      full_name,
-      address_line_1,
-      address_line_2,
-      city,
-      state_province_region,
-      postal_zip_code,
-      country_region,
-      telephone_number,
     });
 
     dispatch({

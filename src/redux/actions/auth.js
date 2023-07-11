@@ -145,7 +145,6 @@ export const load_user = () => async (dispatch) => {
         `${process.env.REACT_APP_API_URL}/auth/users/me/`,
         config
       );
-
       if (res.status === 200) {
         dispatch({
           type: USER_LOADED_SUCCESS,

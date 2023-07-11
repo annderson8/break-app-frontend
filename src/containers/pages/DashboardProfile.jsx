@@ -188,7 +188,7 @@ const DashboardProfile = ({
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
             <button
               type="button"
-              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
@@ -201,7 +201,7 @@ const DashboardProfile = ({
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
-                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -210,7 +210,7 @@ const DashboardProfile = ({
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
-                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -280,7 +280,7 @@ const DashboardProfile = ({
                           placeholder={`${profile.address_line_1}`}
                           onChange={(e) => onChange(e)}
                           value={address_line_1}
-                          className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-500"
+                          className="flex-1 block w-full focus:ring-zinc-500 focus:border-zinc-500 min-w-0 rounded-md sm:text-sm border-gray-500"
                         />
                       </div>
                     </div>
@@ -301,7 +301,7 @@ const DashboardProfile = ({
                           placeholder={`${profile.address_line_2}`}
                           onChange={(e) => onChange(e)}
                           value={address_line_2}
-                          className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-500"
+                          className="flex-1 block w-full focus:ring-zinc-500 focus:border-zinc-500 min-w-0 rounded-md sm:text-sm border-gray-500"
                         />
                       </div>
                     </div>
@@ -322,7 +322,7 @@ const DashboardProfile = ({
                           placeholder={`${profile.city}`}
                           onChange={(e) => onChange(e)}
                           value={city}
-                          className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-500"
+                          className="flex-1 block w-full focus:ring-zinc-500 focus:border-zinc-500 min-w-0 rounded-md sm:text-sm border-gray-500"
                         />
                       </div>
                     </div>
@@ -343,7 +343,7 @@ const DashboardProfile = ({
                           placeholder={`${profile.state_province_region}`}
                           onChange={(e) => onChange(e)}
                           value={state_province_region}
-                          className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-500"
+                          className="flex-1 block w-full focus:ring-zinc-500 focus:border-zinc-500 min-w-0 rounded-md sm:text-sm border-gray-500"
                         />
                       </div>
                     </div>
@@ -364,7 +364,7 @@ const DashboardProfile = ({
                           placeholder={`${profile.zipcode}`}
                           onChange={(e) => onChange(e)}
                           value={zipcode}
-                          className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-500"
+                          className="flex-1 block w-full focus:ring-zinc-500 focus:border-zinc-500 min-w-0 rounded-md sm:text-sm border-gray-500"
                         />
                       </div>
                     </div>
@@ -385,7 +385,7 @@ const DashboardProfile = ({
                           placeholder={`${profile.phone}`}
                           onChange={(e) => onChange(e)}
                           value={phone}
-                          className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-500"
+                          className="flex-1 block w-full focus:ring-zinc-500 focus:border-zinc-500 min-w-0 rounded-md sm:text-sm border-gray-500"
                         />
                       </div>
                     </div>
@@ -418,7 +418,7 @@ const DashboardProfile = ({
                   </div>
 
                   {loading ? (
-                    <button className="inline-flex mt-4 float-right items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button className="inline-flex mt-4 float-right items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
                       <RotatingLines
                         strokeColor="grey"
                         strokeWidth="5"
@@ -430,7 +430,7 @@ const DashboardProfile = ({
                   ) : (
                     <button
                       type="submit"
-                      className="inline-flex mt-4 float-right items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex mt-4 float-right items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       Save
                     </button>

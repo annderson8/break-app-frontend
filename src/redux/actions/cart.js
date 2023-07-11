@@ -99,9 +99,10 @@ export const get_items = () => async dispatch => {
             }
         };
 
+        
+
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/cart-items`, config);
-
             if (res.status === 200) {
                 dispatch({
                     type: GET_ITEMS_SUCCESS,

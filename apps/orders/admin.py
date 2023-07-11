@@ -19,8 +19,8 @@ class OrderItemAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    list_display = ('id', 'name', 'price', 'count', )
-    list_display_links = ('id', 'name', )
+    list_display = ('id', 'order', 'name', 'date_added', )
+    list_display_links = ('id', 'order', )
     list_per_page = 25
 
 

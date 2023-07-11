@@ -31,7 +31,7 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = ['apps.user', 'apps.user_profile']
-ECOMMERCE_APPS = ['apps.category', 'apps.product', 'apps.cart', 'apps.shipping', 'apps.orders', 'apps.payment', 'apps.coupons', 'apps.wishlist', 'apps.reviews']
+ECOMMERCE_APPS = ['apps.category', 'apps.product', 'apps.cart', 'apps.shipping', 'apps.orders', 'apps.payment', 'apps.coupons', 'apps.wishlist', 'apps.reviews', 'apps.place' ]
 THIRD_PARTY_APPS = [
     'corsheaders',
     'rest_framework',
@@ -101,6 +101,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
+    'https://9632-149-167-61-151.ngrok-free.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -108,6 +109,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
+    'https://9632-149-167-61-151.ngrok-free.app',
 ]
 
 
@@ -214,8 +216,7 @@ BT_PRIVATE_KEY = os.environ.get('BT_PRIVATE_KEY')
 # Stripe settings
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-
-SITE_URL = 'http://localhost:3000/thanyou'
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 
 AUTH_USER_MODEL = "user.UserAccount"
 
@@ -232,7 +233,19 @@ if not DEBUG:
     EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 
 
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
 
 
   # # django-ckeditor will not work with S3 through django-storages without this line in settings.py

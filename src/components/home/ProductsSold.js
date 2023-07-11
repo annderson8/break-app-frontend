@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-baseline sm:justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Los mas vendidos</h2>
-            <a href="#" className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
+            <a href="#" className="hidden text-sm font-semibold text-zinc-600 hover:text-zinc-500 sm:block">
               Browse all favorites<span aria-hidden="true"> &rarr;</span>
             </a>
           </div>
@@ -36,7 +36,7 @@ import { Link } from "react-router-dom"
           </div>
   
           <div className="mt-6 sm:hidden">
-            <Link to="#" className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+            <Link to="#" className="block text-sm font-semibold text-zinc-600 hover:text-zinc-500">
               Ver mas productos<span aria-hidden="true"> &rarr;</span>
             </Link>
           </div>

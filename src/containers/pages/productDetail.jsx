@@ -27,6 +27,7 @@ import {
   get_total,
   get_item_total,
 } from "../../redux/actions/cart";
+
 import { useEffect, useState } from "react";
 import ImageGallery from "../../components/product/ImageGallery";
 import WishlistHeart from "../../components/product/WishlistHeart";
@@ -145,6 +146,7 @@ const ProductDetail = ({
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+
   const leaveReview = (e) => {
     e.preventDefault();
     if (rating !== null) create_review(productId, rating, comment);
@@ -152,8 +154,7 @@ const ProductDetail = ({
 
   const updateReview = (e) => {
     e.preventDefault();
-      if (rating !== null)
-        update_review(productId, rating, comment);
+    if (rating !== null) update_review(productId, rating, comment);
   };
 
   const deleteReview = () => {
@@ -198,12 +199,8 @@ const ProductDetail = ({
 
               <div className="mt-6">
                 <h3 className="sr-only">Description</h3>
-                <div
-                  className="text-base text-gray-700 space-y-6"
-                  dangerouslySetInnerHTML={{
-                    __html: product && product.description,
-                  }}
-                />
+                <div className="text-base text-gray-700 space-y-6" />
+                {product && product.description}
               </div>
 
               <div className="mt-6">
@@ -220,7 +217,7 @@ const ProductDetail = ({
 
                 <div className="mt-4 flex sm:flex-col1">
                   {loading ? (
-                    <button className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full">
+                    <button className="max-w-xs flex-1 bg-zinc-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-zinc-500 sm:w-full">
                       <RotatingLines
                         strokeColor="grey"
                         strokeWidth="5"
@@ -232,9 +229,9 @@ const ProductDetail = ({
                   ) : (
                     <button
                       onClick={addToCart}
-                      className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
+                      className="max-w-xs flex-1 bg-zinc-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-zinc-500 sm:w-full"
                     >
-                      Agregar al Carrito
+                      Add to Cart
                     </button>
                   )}
 
@@ -292,11 +289,10 @@ const ProductDetail = ({
                       <Stars rating={1.0} />
                     </div>
                   </div>
-                  {
-                    review &&
-                    review !== null &&
-                    review !== undefined &&
-                    isAuthenticated ? (
+                  {review &&
+                  review !== null &&
+                  review !== undefined &&
+                  isAuthenticated ? (
                     <form onSubmit={(e) => updateReview(e)}>
                       <div>
                         <label
@@ -314,7 +310,7 @@ const ProductDetail = ({
                             value={comment}
                             onChange={(e) => onChange(e)}
                             placeholder={review.comment}
-                            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                            className="shadow-sm focus:ring-zinc-500 focus:border-zinc-500 block w-full sm:text-sm border-gray-300 rounded-md"
                             defaultValue={""}
                           />
                         </div>
@@ -335,7 +331,7 @@ const ProductDetail = ({
                       </select>
                       <button
                         type="submit"
-                        className="mt-4  inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="mt-4  inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                       >
                         Update
                       </button>
@@ -357,7 +353,7 @@ const ProductDetail = ({
                             required
                             value={comment}
                             onChange={(e) => onChange(e)}
-                            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                            className="shadow-sm focus:ring-zinc-500 focus:border-zinc-500 block w-full sm:text-sm border-gray-300 rounded-md"
                             defaultValue={""}
                           />
                         </div>
@@ -378,7 +374,7 @@ const ProductDetail = ({
                       </select>
                       <button
                         type="submit"
-                        className="mt-4  inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="mt-4  inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                       >
                         Add
                       </button>
@@ -402,7 +398,7 @@ const ProductDetail = ({
                             </span>
                           </div>
                           <div>
-                            <Stars rating={review.rating}/>
+                            <Stars rating={review.rating} />
                             <h4 className="text-lg font-bold">{review.user}</h4>
                             <p className="mt-1">{review.comment}</p>
                           </div>

@@ -11,6 +11,7 @@ import Coupons from './coupons';
 import Profile from './profile';
 import Wishlist from './wishlist';
 import Reviews from './reviews';
+import Place from './place';
 
 export default combineReducers({
     Auth, 
@@ -24,5 +25,6 @@ export default combineReducers({
     Coupons,
     Profile,
     Wishlist,
-    Reviews
+    Reviews,
+    Place
 });

@@ -141,7 +141,7 @@ const DashboardPaymentDetail = ({
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
             <button
               type="button"
-              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
@@ -170,7 +170,7 @@ const DashboardPaymentDetail = ({
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
-                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -179,7 +179,7 @@ const DashboardPaymentDetail = ({
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
-                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -311,20 +311,20 @@ const DashboardPaymentDetail = ({
                                     <div className="mt-6">
                                       <div className="bg-gray-200 rounded-full overflow-hidden">
                                         <div
-                                          className="h-2 bg-indigo-600 rounded-full"
+                                          className="h-2 bg-zinc-600 rounded-full"
                                           style={{
                                             width: `calc((${product.step} * 2 + 1) / 8 * 100%)`,
                                           }}
                                         />
                                       </div>
                                       <div className="hidden sm:grid grid-cols-4 font-medium text-gray-600 mt-6">
-                                        <div className="text-indigo-600">
+                                        <div className="text-zinc-600">
                                           Order placed
                                         </div>
                                         <div
                                           className={classNames(
                                             product.step > 0
-                                              ? "text-indigo-600"
+                                              ? "text-zinc-600"
                                               : "",
                                             "text-center"
                                           )}
@@ -334,7 +334,7 @@ const DashboardPaymentDetail = ({
                                         <div
                                           className={classNames(
                                             product.step > 1
-                                              ? "text-indigo-600"
+                                              ? "text-zinc-600"
                                               : "",
                                             "text-center"
                                           )}
@@ -344,7 +344,7 @@ const DashboardPaymentDetail = ({
                                         <div
                                           className={classNames(
                                             product.step > 2
-                                              ? "text-indigo-600"
+                                              ? "text-zinc-600"
                                               : "",
                                             "text-right"
                                           )}

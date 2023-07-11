@@ -139,7 +139,7 @@ const DashboardPayments = ({
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
             <button
               type="button"
-              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
@@ -150,7 +150,7 @@ const DashboardPayments = ({
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
-                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -159,7 +159,7 @@ const DashboardPayments = ({
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
-                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -201,28 +201,27 @@ const DashboardPayments = ({
           </div>
 
           <main className="flex-1">
-            <div className="py-6">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-2">
+              <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
                 {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-7xl mx-auto">
                   <div className="bg-white">
                     <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
                       <div className="mt-8">
                         <div className="space-y-12">
-                          {orders.map((product) => (
+                          <h2 className="sr-only">Products purchased</h2>
+                          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+                            Order Details
+                          </h1>
+                          {orders.map((order) => (
                             <>
-                              <h2 className="sr-only">Products purchased</h2>
-                              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                                Order Details
-                              </h1>
-
                               <div className="text-sm border-b border-gray-200 mt-2 pb-5 sm:flex sm:justify-between">
                                 <dl className="flex">
                                   <dt className="text-gray-500">
                                     Transaction ID: &nbsp;
                                   </dt>
                                   <dd className="font-medium text-gray-900">
-                                    {product.transaction_id}
+                                    {order.transaction_id}
                                   </dd>
                                   <dt>
                                     <span className="sr-only">Date</span>
@@ -230,117 +229,26 @@ const DashboardPayments = ({
                                       className="text-gray-400 mx-2"
                                       aria-hidden="true"
                                     >
-                                      &middot;
+                                      -
                                     </span>
                                   </dt>
                                   <dd className="font-medium text-gray-900">
                                     <time dateTime="2021-03-22">
-                                      {moment(product.date_issued).fromNow()}
+                                      {moment(order.date_issued).fromNow()}
                                     </time>
                                   </dd>
                                 </dl>
                                 <div className="mt-4 sm:mt-0">
                                   <Link
-                                    to={`/dashboard/payment/${product.transaction_id}`}
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                    to={`/dashboard/payment/${order.transaction_id}`}
+                                    className="font-medium text-zinc-600 hover:text-zinc-500"
                                   >
                                     View invoice
                                     <span aria-hidden="true"> &rarr;</span>
                                   </Link>
                                 </div>
                               </div>
-                              <div
-                                key={product.id}
-                                className="grid grid-cols-1 text-sm sm:grid-rows-1 sm:grid-cols-12 sm:gap-x-6 md:gap-x-8 lg:gap-x-8"
-                              >
-                                <div className="mt-6 sm:col-span-7 sm:mt-0 md:row-end-1">
-                                  <h3 className="text-lg font-medium text-gray-900">
-                                    <Link to={`/product/${product.id}`}>
-                                      {product.name}
-                                    </Link>
-                                  </h3>
-                                  <p className="font-medium text-gray-900 mt-1">
-                                    Transaction ID: {product.transaction_id}
-                                  </p>
-                                  <p className="text-gray-500 mt-3">
-                                    {product.description}
-                                  </p>
-                                </div>
-                                <div className="sm:col-span-12 md:col-span-7">
-                                  <dl className="grid grid-cols-1 gap-y-8 border-b py-8 border-gray-200 sm:grid-cols-2 sm:gap-x-6 sm:py-6 md:py-10">
-                                    <div>
-                                      <dt className="font-medium text-gray-900">
-                                        Delivery address
-                                      </dt>
-                                      <dd className="mt-3 text-gray-500">
-                                        <span className="block">
-                                          {product.address_line_1}
-                                        </span>
-                                        <span className="block">
-                                          {product.address_line_2}
-                                        </span>
-                                      </dd>
-                                    </div>
-                                    <div>
-                                      <dt className="font-medium text-gray-900">
-                                        Shipping
-                                      </dt>
-                                      <dd className="mt-3 text-gray-500 space-y-3">
-                                        <p>$ {product.shipping_price}</p>
-                                        <p>$ {product.amount} Total Cost</p>
-                                      </dd>
-                                    </div>
-                                  </dl>
-                                  <p className="font-medium text-gray-900 mt-6 md:mt-10">
-                                    Status: {product.status}
-                                  </p>
-                                  <div className="mt-6">
-                                    <div className="bg-gray-200 rounded-full overflow-hidden">
-                                      <div
-                                        className="h-2 bg-indigo-600 rounded-full"
-                                        style={{
-                                          width: `calc((${product.step} * 2 + 1) / 8 * 100%)`,
-                                        }}
-                                      />
-                                    </div>
-                                    <div className="hidden sm:grid grid-cols-4 font-medium text-gray-600 mt-6">
-                                      <div className="text-indigo-600">
-                                        Order placed
-                                      </div>
-                                      <div
-                                        className={classNames(
-                                          product.step > 0
-                                            ? "text-indigo-600"
-                                            : "",
-                                          "text-center"
-                                        )}
-                                      >
-                                        Processing
-                                      </div>
-                                      <div
-                                        className={classNames(
-                                          product.step > 1
-                                            ? "text-indigo-600"
-                                            : "",
-                                          "text-center"
-                                        )}
-                                      >
-                                        Shipped
-                                      </div>
-                                      <div
-                                        className={classNames(
-                                          product.step > 2
-                                            ? "text-indigo-600"
-                                            : "",
-                                          "text-right"
-                                        )}
-                                      >
-                                        Delivered
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              Productos 
                             </>
                           ))}
                         </div>
