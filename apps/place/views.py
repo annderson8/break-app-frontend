@@ -19,6 +19,6 @@ class GetPlaceView(APIView):
             )
         else:
             return Response(
-                {'error': 'No shipping options available'},
+                {'error': 'No place options available'},
                 status=status.HTTP_404_NOT_FOUND
             )

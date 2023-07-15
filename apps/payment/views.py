@@ -11,14 +11,9 @@ from apps.shipping.models import Shipping
 from django.core.mail import send_mail
 from django.conf import settings
 
-from django.http import JsonResponse
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 import json
 from django.http import HttpResponse
-
-from django.shortcuts import redirect
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -118,6 +113,8 @@ class CreatePaymentIntentView(APIView):
 
         total_amount_cents = int(float(total_amount) * 100)
 
+        print('⚠️  Valor a Pagar' + str(total_amount_cents))
+
         try:
             intent = stripe.PaymentIntent.create(
                 amount=total_amount_cents,
@@ -138,37 +135,6 @@ class CreatePaymentIntentView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': str(e)})
 
 
-# @csrf_exempt
-# def StripeWebhookView(request):
-#   payload = request.body
-#   sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-#   event = None
-
-#   try:
-#     event = stripe.Webhook.construct_event(
-#       payload, sig_header, endpoint_secret
-#     )
-#   except ValueError as e:
-#     # Invalid payload
-#     print('⚠️  Value error.' + str(e))
-#     return HttpResponse(status=400)
-#   except stripe.error.SignatureVerificationError as e:
-#     # Invalid signature
-#     print('⚠️  Webhook signature verification failed.' + str(e))
-#     return HttpResponse(status=400)
-
-#   # Handle the event
-#   if event.type == 'payment_intent.succeeded':
-#     payment_intent = event.data.object # contains a stripe.PaymentIntent
-#     print('PaymentIntent was successful!')
-#   elif event.type == 'payment_method.attached':
-#     payment_method = event.data.object # contains a stripe.PaymentMethod
-#     print('PaymentMethod was attached to a Customer!')
-#   # ... handle other event types
-#   else:
-#     print('Unhandled event type {}'.format(event.type))
-
-#   return HttpResponse(status=200)
 
 @csrf_exempt
 def StripeWebhookView(request):
@@ -204,7 +170,6 @@ def StripeWebhookView(request):
         amount=payment_intent['amount'],
         full_name = "Nombre completo"
 
-        print('⚠️  amount ****: ' + str(amount[0]))
 
         cart = Cart.objects.get(user=user)
 
@@ -265,7 +230,6 @@ def StripeWebhookView(request):
                         product=product,
                         order=order,
                         name=product.name,
-                        count = 1,
                         price=cart_item.product.price,
                     )
             except Exception as e:

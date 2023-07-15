@@ -17,7 +17,7 @@ class Order(models.Model):
     
     status = models.CharField(
         max_length=50, choices=OrderStatus.choices, default=OrderStatus.not_processed)
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=255, unique=True)
     amount = models.DecimalField(max_digits=5, decimal_places=2)
     full_name = models.CharField(max_length=255)
@@ -33,10 +33,9 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    count = models.IntegerField()
     place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True, blank=True)
     date_delivery = models.DateTimeField(default=datetime.now)
-    time_delivery = models.DateTimeField(default=datetime.now)
+    time_delivery = models.CharField(max_length=255, null=True, blank=True)
     date_added = models.DateTimeField(default=datetime.now)
 
     def __str__(self):

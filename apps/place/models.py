@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class DeliveryTime(models.Model):
     time = models.CharField(max_length=255)
 
@@ -18,6 +17,7 @@ class Place(models.Model):
     zipcode = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
-    
+    times = models.ManyToManyField(DeliveryTime)
+
     def __str__(self):
         return self.name

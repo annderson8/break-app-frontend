@@ -77,7 +77,7 @@ export const get_client_token = () => async (dispatch) => {
   }
 };
 
-export const process_payment_stripe = (amount, coupon_name, shipping_id) => async (dispatch) => {
+export const process_payment_stripe = (coupon_name, shipping_id) => async (dispatch) => {
     const config = {
         headers: {
           Accept: "application/json",
@@ -87,11 +87,10 @@ export const process_payment_stripe = (amount, coupon_name, shipping_id) => asyn
       };
 
   const body = JSON.stringify({
-    amount,
     coupon_name,
     shipping_id
   });
-  console.log(body);
+  console.log("En actions",body);
   try {
     const res = await axios.post(
       `${process.env.REACT_APP_API_URL}/api/payment/create-payment-intent`,
@@ -103,12 +102,11 @@ export const process_payment_stripe = (amount, coupon_name, shipping_id) => asyn
         type: PAYMENT_STRIPE_SUCCESS,
         payload: res.data,
       });
-      dispatch(setAlert(res.data.success, "green"));
     } else {
       dispatch({
         type: PAYMENT_STRIPE_FAIL,
       });
-      dispatch(setAlert(res.data.error, "red"));
+      dispatch(setAlert("Error loading payment", "red"));
     }
   } catch (err) {
     dispatch({

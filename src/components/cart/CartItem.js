@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { RotatingLines } from "react-loader-spinner";
 
 import {
   XMarkIcon,
@@ -16,8 +17,9 @@ const CartItem = ({
   render,
   setRender,
   setAlert,
-  place,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     item_count: 1,
   });
@@ -28,22 +30,24 @@ const CartItem = ({
     if (count) setFormData({ ...formData, item_count: count });
   }, [count]);
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onChange = (e) => {
+    setLoading(true);
+    const newCount = Number(e.target.value);
+    setFormData({ ...formData, [e.target.name]: newCount });
     const fetchData = async () => {
       try {
         if (item.product.quantity >= item_count) {
-          await update_item(item, item_count);
+          await update_item(item, newCount);
         } else {
           setAlert("Not enough in stock", "danger");
         }
         setRender(!render);
-      } catch (err) {}
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        console.log(err);
+      }
     };
-
     fetchData();
   };
 
@@ -81,9 +85,16 @@ const CartItem = ({
             </p>
           </div>
           <div className="mt-4 sm:mt-0 sm:pr-9">
-            <form
-              onSubmit={(e) => onSubmit(e)}
-            >
+            {loading ? (
+              <RotatingLines
+                className="text-center"
+                strokeColor="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="32"
+                visible={true}
+              />
+            ) : (
               <select
                 name="item_count"
                 onChange={(e) => onChange(e)}
@@ -100,13 +111,7 @@ const CartItem = ({
                 <option>8</option>
                 <option>9</option>
               </select>
-              <button
-                type="submit"
-                className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500"
-              >
-                <span className="mx-2">Update</span>
-              </button>
-            </form>
+            )}
 
             <div className="absolute top-0 right-0">
               <button

@@ -21,7 +21,6 @@ export const check_coupon = coupon_name => async dispatch => {
                 type: GET_COUPON_SUCCESS,
                 payload: res.data
             });
-            dispatch(setAlert('Coupon applied', 'green'));
         } else {
             dispatch({
                 type: GET_COUPON_FAIL

@@ -146,7 +146,6 @@ const ProductDetail = ({
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-
   const leaveReview = (e) => {
     e.preventDefault();
     if (rating !== null) create_review(productId, rating, comment);
@@ -217,29 +216,30 @@ const ProductDetail = ({
 
                 <div className="mt-4 flex sm:flex-col1">
                   {loading ? (
-                    <button className="max-w-xs flex-1 bg-zinc-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-zinc-500 sm:w-full">
-                      <RotatingLines
-                        strokeColor="grey"
-                        strokeWidth="5"
-                        animationDuration="0.75"
-                        width="96"
-                        visible={true}
-                      />
-                    </button>
+                    <RotatingLines
+                      className="text-center"
+                      strokeColor="grey"
+                      strokeWidth="5"
+                      animationDuration="0.75"
+                      width="40"
+                      visible={true}
+                    />
                   ) : (
-                    <button
-                      onClick={addToCart}
-                      className="max-w-xs flex-1 bg-zinc-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-zinc-500 sm:w-full"
-                    >
-                      Add to Cart
-                    </button>
-                  )}
+                    <>
+                      <button
+                        onClick={addToCart}
+                        className="max-w-xs flex-1 bg-zinc-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-zinc-500 sm:w-full"
+                      >
+                        Add to Cart
+                      </button>
 
-                  <WishlistHeart
-                    product={product}
-                    wishlist={wishlist}
-                    addToWishlist={addToWishlist}
-                  />
+                      <WishlistHeart
+                        product={product}
+                        wishlist={wishlist}
+                        addToWishlist={addToWishlist}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </div>

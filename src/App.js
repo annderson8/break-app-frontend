@@ -52,7 +52,7 @@ function App() {
 
           <Route exact path="/thankyou" element={<ThankYou />} />
 
-          <Route exact path="/dashboard" element={<Dashboard />} />
+          {/* <Route exact path="/dashboard" element={<Dashboard />} /> */}
           <Route
             exact
             path="/dashboard/payments"
@@ -66,7 +66,7 @@ function App() {
           <Route
             exact
             path="/dashboard/profile"
-            element={<DashboardProfile />}
+            element={<Dashboard />}
           />
         </Routes>
       </Router>
