@@ -28,7 +28,7 @@ function Navbar({
   get_categories,
   categories,
   get_search_products,
-  total_items
+  total_items,
 }) {
   const [redirect, setRedirect] = useState(false);
   const [render, setRender] = useState(false);
@@ -174,27 +174,10 @@ function Navbar({
               </Popover.Button>
             </div>
             <div className="hidden md:flex-1 md:flex md:items-center md:justify-between">
-              <Popover.Group as="nav" className="flex space-x-10">
-                <NavLink
-                  to="/shop"
-                  className=" mt-2 text-base font-medium text-gray-500 hover:text-gray-900"
-                  style={({ isActive }) => ({
-                    textDecoration: isActive ? "underline" : "none",
-                  })}
-                >
-                  Store
-                </NavLink>
-                {window.location.pathname === "/search" ? (
-                  <></>
-                ) : (
-                  <SearchBox
-                    search={search}
-                    onChange={onChange}
-                    onSubmit={onSubmit}
-                    categories={categories}
-                  />
-                )}
-              </Popover.Group>
+              <Popover.Group
+                as="nav"
+                className="flex space-x-10"
+              ></Popover.Group>
               <div className="flex items-center md:ml-12">
                 <Link to="/cart">
                   <ShoppingCartIcon className="h-8 w-8 cursor-pointer text-gray-300 mr-4" />
@@ -240,37 +223,30 @@ function Navbar({
                 </div>
               </div>
               <div className="py-6 px-5">
-                <div className="grid grid-cols-2 gap-4">
-                  <Link
-                    to="/shop"
-                    className="rounded-md text-base font-medium text-gray-900 hover:text-gray-700"
-                  >
-                    Store
-                  </Link>
-
-                </div>
                 <div className="mt-6">
                   {isAuthenticated ? (
                     <Link
-                      to="/dashboard"
+                      to="/dashboard/payments"
                       className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-zinc-600 hover:bg-zinc-700"
                     >
                       Dashboard
                     </Link>
                   ) : (
                     <Link
-                      to="/signup"
+                      to="/signin"
                       className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-zinc-600 hover:bg-zinc-700"
                     >
-                      Sign up
+                      Sign in
                     </Link>
                   )}
 
                   <p className="mt-6 text-center text-base font-medium text-gray-500">
-                    Existing customer?{" "}
-                    <Link to="/signin" className=" hover:text-zinc-500 text-zinc-700">
-                      Sign in
-                    </Link>
+                    <button
+                      onClick={logoutHandler}
+                      className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-zinc-600 hover:bg-zinc-700"
+                    >
+                      Sign out
+                    </button>
                   </p>
                 </div>
               </div>
@@ -287,7 +263,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.Auth.isAuthenticated,
   user: state.Auth.user,
   categories: state.Categories.categories,
-  total_items: state.Cart.total_items
+  total_items: state.Cart.total_items,
 });
 
 export default connect(mapStateToProps, {

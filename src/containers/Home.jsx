@@ -1,43 +1,98 @@
-import Layout from "../hocs/Layout";
+import { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  get_products_by_arrival,
-  get_products_by_sold,
-} from "../redux/actions/products";
-import { useEffect } from "react";
-import Banner from "../components/home/Banner";
-import ProductsArrival from "../components/home/ProductsArrival";
-import ProductsSold from "../components/home/ProductsSold";
+
+import Layout from "../hocs/Layout";
+import { get_products } from "../redux/actions/products";
+import { get_wishlist_items } from "../redux/actions/wishlist";
+
+import ProductsList from "../components/home/ProductsList";
+
 const Home = ({
-  get_products_by_arrival,
-  get_products_by_sold,
-  products_arrival,
-  products_sold,
+  get_products,
+  products,
+  get_wishlist_items,
+  wishlist,
+  isAuthenticated,
 }) => {
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchByTitle, setSearchByTitle] = useState("");
+  const [wishProduct, setWishProduct] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    get_products_by_arrival();
-    get_products_by_sold();
+    get_products();
+    
   }, []);
+
+  useEffect(() => {
+    if (products) {
+      setItems(products);
+    }
+  }, [products]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      get_wishlist_items();
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (wishlist) {
+      setWishProduct(wishlist.map((item) => item.product));
+    }
+  }, [wishlist]);
+
+
+  const filteredItemsByTitle = (items, searchByTitle) => {
+    return items?.filter((item) =>
+      item.name.toLowerCase().includes(searchByTitle.toLowerCase())
+    );
+  };
+
+  useEffect(() => {
+    if (products !== null) {
+      if (searchByTitle.length > 0) {
+        setFilteredItems(filteredItemsByTitle(items, searchByTitle));
+        setIsSearch(true);
+      } else {
+        setFilteredItems(items);
+        setIsSearch(false);
+      }
+    }
+  }, [items, searchByTitle]);
 
   return (
     <Layout>
-      <div className="text-blue-500">
-        <Banner />
-        <ProductsArrival data={products_arrival} />
-        <ProductsSold data={products_sold} />
+      <div className="text-zinc-700">
+        <div className="flex justify-center mt-4">
+          <input
+            type="text"
+            placeholder="Search a product"
+            className="rounded-lg border border-zinc-500 w-3/4  p-4 mb-4 focus:outline-none"
+            onChange={(event) => setSearchByTitle(event.target.value)}
+          />
+        </div>
+        {!isSearch && wishProduct.length > 0 && (
+          <ProductsList data={wishProduct} title={"My favourites"} />
+        )}
+
+        {filteredItems && (
+          <ProductsList data={filteredItems} title={"All products"} />
+        )}
       </div>
     </Layout>
   );
 };
 
 const mapStateToProps = (state) => ({
-  products_arrival: state.Products.products_arrival,
-  products_sold: state.Products.products_sold,
+  isAuthenticated: state.Auth.isAuthenticated,
+  products: state.Products.products,
+  wishlist: state.Wishlist.items,
 });
 
 export default connect(mapStateToProps, {
-  get_products_by_arrival,
-  get_products_by_sold,
+  get_products,
+  get_wishlist_items,
 })(Home);

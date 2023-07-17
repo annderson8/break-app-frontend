@@ -12,14 +12,6 @@ import {
   get_product,
   get_related_products,
 } from "../../redux/actions/products";
-import {
-  get_reviews,
-  get_review,
-  create_review,
-  update_review,
-  delete_review,
-  filter_reviews,
-} from "../../redux/actions/reviews";
 import { RotatingLines } from "react-loader-spinner";
 import {
   get_items,
@@ -31,13 +23,13 @@ import {
 import { useEffect, useState } from "react";
 import ImageGallery from "../../components/product/ImageGallery";
 import WishlistHeart from "../../components/product/WishlistHeart";
-import { Navigate } from "react-router";
 
-import Stars from "../../components/product/Stars";
+import ProductsList from "../../components/home/ProductsList";
 
 const ProductDetail = ({
   get_product,
   get_related_products,
+  related_products,
   product,
   get_items,
   add_item,
@@ -49,18 +41,41 @@ const ProductDetail = ({
   isAuthenticated,
   remove_wishlist_item,
   wishlist,
-  get_reviews,
-  get_review,
-  create_review,
-  update_review,
-  delete_review,
-  filter_reviews,
-  review,
-  reviews,
 }) => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
+  const params = useParams();
+  const productId = params.productId;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    get_product(productId);
+    get_related_products(productId);
+    get_wishlist_items();
+    get_wishlist_item_total();
+  }, [productId]);
+
+  const [isPresent, setIsPresent] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (
+        wishlist &&
+        wishlist !== null &&
+        wishlist !== undefined &&
+        product &&
+        product !== null &&
+        product !== undefined
+      ) {
+        const productIsInWishlist = wishlist.some(
+          (item) => item.product.id.toString() === product.id.toString()
+        );
+        setIsPresent(productIsInWishlist);
+      }
+    }
+  }, [wishlist]);
 
   const addToCart = async () => {
     if (
@@ -80,100 +95,19 @@ const ProductDetail = ({
   };
 
   const addToWishlist = async () => {
-    if (isAuthenticated) {
-      let isPresent = false;
-      if (
-        wishlist &&
-        wishlist !== null &&
-        wishlist !== undefined &&
-        product &&
-        product !== null &&
-        product !== undefined
-      ) {
-        wishlist.map((item) => {
-          if (item.product.id.toString() === product.id.toString()) {
-            isPresent = true;
-          }
-        });
-      }
-
-      if (isPresent) {
-        await remove_wishlist_item(product.id);
-        await get_wishlist_items();
-        await get_wishlist_item_total();
-      } else {
-        await remove_wishlist_item(product.id);
-        await add_wishlist_item(product.id);
-        await get_wishlist_items();
-        await get_wishlist_item_total();
-        await get_items();
-        await get_total();
-        await get_item_total();
-      }
+    if (isPresent) {
+      await remove_wishlist_item(product.id);
+      await get_wishlist_items();
+      await get_wishlist_item_total();
     } else {
-      return <Navigate to="/cart" />;
+      // await remove_wishlist_item(product.id);
+      await add_wishlist_item(product.id);
+      await get_wishlist_items();
+      await get_wishlist_item_total();
+      await get_items();
+      await get_total();
+      await get_item_total();
     }
-  };
-
-  const params = useParams();
-  const productId = params.productId;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    get_product(productId);
-    get_related_products(productId);
-    get_wishlist_items();
-    get_wishlist_item_total();
-  }, []);
-
-  useEffect(() => {
-    get_reviews(productId);
-  }, [productId]);
-
-  useEffect(() => {
-    get_review(productId);
-  }, [productId]);
-
-  // const [rating, setRating] = useState(5.0);
-
-  const [formData, setFormData] = useState({
-    comment: "",
-    rating: "",
-  });
-
-  const { comment, rating } = formData;
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const leaveReview = (e) => {
-    e.preventDefault();
-    if (rating !== null) create_review(productId, rating, comment);
-  };
-
-  const updateReview = (e) => {
-    e.preventDefault();
-    if (rating !== null) update_review(productId, rating, comment);
-  };
-
-  const deleteReview = () => {
-    const fetchData = async () => {
-      await delete_review(productId);
-      await get_review(productId);
-      // setRating(5.0);
-      setFormData({
-        comment: "",
-      });
-    };
-    fetchData();
-  };
-
-  const filterReviews = (numStars) => {
-    filter_reviews(productId, numStars);
-  };
-
-  const getReviews = () => {
-    get_reviews(productId);
   };
 
   return (
@@ -243,172 +177,15 @@ const ProductDetail = ({
                 </div>
               </div>
             </div>
-            <section className="my-5 max-w-7xl">
-              <div className="grid grid-cols-5">
-                <div className="col-span-2">
-                  <div>
-                    <button
-                      className="btn btn-primary btn-sm mb-3 ml-6 mt-2 font-sofiapro-light"
-                      onClick={getReviews}
-                    >
-                      Mostrar todas
-                    </button>
-                    <div
-                      className="mb-1"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => filterReviews(5)}
-                    >
-                      <Stars rating={5.0} />
-                    </div>
-                    <div
-                      className="mb-1"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => filterReviews(4.0)}
-                    >
-                      <Stars rating={4.0} />
-                    </div>
-                    <div
-                      className="mb-1"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => filterReviews(3.0)}
-                    >
-                      <Stars rating={3.0} />
-                    </div>
-                    <div
-                      className="mb-1"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => filterReviews(2.0)}
-                    >
-                      <Stars rating={2.0} />
-                    </div>
-                    <div
-                      className="mb-1"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => filterReviews(1.0)}
-                    >
-                      <Stars rating={1.0} />
-                    </div>
-                  </div>
-                  {review &&
-                  review !== null &&
-                  review !== undefined &&
-                  isAuthenticated ? (
-                    <form onSubmit={(e) => updateReview(e)}>
-                      <div>
-                        <label
-                          htmlFor="comment"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Add your review
-                        </label>
-                        <div className="mt-1">
-                          <textarea
-                            rows={4}
-                            name="comment"
-                            id="comment"
-                            required
-                            value={comment}
-                            onChange={(e) => onChange(e)}
-                            placeholder={review.comment}
-                            className="shadow-sm focus:ring-zinc-500 focus:border-zinc-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                            defaultValue={""}
-                          />
-                        </div>
-                      </div>
-                      <select
-                        name="rating"
-                        className="mt-4 float-right"
-                        required
-                        value={rating}
-                        onChange={(e) => onChange(e)}
-                        placeholder="0 - 5"
-                      >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-                      <button
-                        type="submit"
-                        className="mt-4  inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-                      >
-                        Update
-                      </button>
-                    </form>
-                  ) : (
-                    <form onSubmit={(e) => leaveReview(e)}>
-                      <div>
-                        <label
-                          htmlFor="comment"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Add your review
-                        </label>
-                        <div className="mt-1">
-                          <textarea
-                            rows={4}
-                            name="comment"
-                            id="comment"
-                            required
-                            value={comment}
-                            onChange={(e) => onChange(e)}
-                            className="shadow-sm focus:ring-zinc-500 focus:border-zinc-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                            defaultValue={""}
-                          />
-                        </div>
-                      </div>
-                      <select
-                        name="rating"
-                        className="mt-4 float-right"
-                        required
-                        value={rating}
-                        onChange={(e) => onChange(e)}
-                        placeholder="0 - 5"
-                      >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-                      <button
-                        type="submit"
-                        className="mt-4  inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-                      >
-                        Add
-                      </button>
-                    </form>
-                  )}
-                </div>
-                <div className="col-span-3">
-                  {reviews &&
-                    reviews.map((review, index) => (
-                      <>
-                        <div className="flex">
-                          <div className="mx-4 flex-shrink-0">
-                            <span className="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
-                              <svg
-                                className="h-full w-full text-gray-300"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                              </svg>
-                            </span>
-                          </div>
-                          <div>
-                            <Stars rating={review.rating} />
-                            <h4 className="text-lg font-bold">{review.user}</h4>
-                            <p className="mt-1">{review.comment}</p>
-                          </div>
-                        </div>
-                      </>
-                    ))}
-                </div>
-              </div>
-            </section>
           </div>
+          {related_products &&
+            related_products !== null &&
+            related_products !== undefined && (
+              <ProductsList
+                data={related_products}
+                title={"Related products"}
+              />
+            )}
         </div>
       </div>
     </Layout>
@@ -416,11 +193,10 @@ const ProductDetail = ({
 };
 
 const mapStateToProps = (state) => ({
-  product: state.Products.product,
   isAuthenticated: state.Auth.isAuthenticated,
-  wishlist: state.Wishlist.wishlist,
-  review: state.Reviews.review,
-  reviews: state.Reviews.reviews,
+  product: state.Products.product,
+  wishlist: state.Wishlist.items,
+  related_products: state.Products.related_products,
 });
 
 export default connect(mapStateToProps, {
@@ -434,10 +210,4 @@ export default connect(mapStateToProps, {
   get_wishlist_items,
   get_wishlist_item_total,
   remove_wishlist_item,
-  get_reviews,
-  get_review,
-  create_review,
-  update_review,
-  delete_review,
-  filter_reviews,
 })(ProductDetail);

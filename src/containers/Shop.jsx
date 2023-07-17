@@ -15,11 +15,6 @@ import { get_products, get_filtered_products } from "../redux/actions/products";
 import ProductCard from "../components/product/ProductCard";
 import { prices } from "../helpers/fixedPrices";
 
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const Shop = ({
   get_categories,
   categories,

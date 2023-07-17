@@ -9,11 +9,11 @@ import {
   get_total,
   get_item_total,
 } from "../../redux/actions/cart";
-import { remove_wishlist_item } from "../../redux/actions/wishlist";
+import { get_wishlist_items } from "../../redux/actions/wishlist";
 import { useEffect } from "react";
 import CartItem from "../../components/cart/CartItem";
 import { Link } from "react-router-dom";
-import WishlistItem from "../../components/cart/WishlistItem";
+import ProductsList from "../../components/home/ProductsList";
 
 const Cart = ({
   get_items,
@@ -27,8 +27,8 @@ const Cart = ({
   remove_item,
   update_item,
   setAlert,
-  wishlist_items,
-  remove_wishlist_item,
+  wishlist,
+  get_wishlist_items,
 
 }) => {
   const [render, setRender] = useState(false);
@@ -39,6 +39,17 @@ const Cart = ({
     get_total();
     get_item_total();
   }, [render]);
+
+
+  const [wishProduct, setWishProduct] = useState([]);
+
+  useEffect(() => {
+    get_wishlist_items();
+  }, []);
+
+  useEffect(() => {
+    setWishProduct( wishlist && wishlist.map(item => item.product))
+  }, [wishlist]);
 
 
   const showItems = () => {
@@ -69,42 +80,15 @@ const Cart = ({
     );
   };
 
-  const showWishlistItems = () => {
-    return (
-      <div>
-        {wishlist_items &&
-          wishlist_items !== null &&
-          wishlist_items !== undefined &&
-          wishlist_items.length !== 0 &&
-          wishlist_items.map((item, index) => {
-            let count = item.count;
-            return (
-              <div key={index}>
-                <WishlistItem
-                  item={item}
-                  count={count}
-                  update_item={update_item}
-                  remove_wishlist_item={remove_wishlist_item}
-                  render={render}
-                  setRender={setRender}
-                  setAlert={setAlert}
-                />
-              </div>
-            );
-          })}
-      </div>
-    );
-  };
-
  
 
   const checkoutButton = () => {
     if (total_items < 1) {
       return (
         <>
-          <Link to="/shop">
+          <Link to="/">
             <button className="w-full bg-zinc-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-zinc-500">
-              Buscar items
+              Search products 
             </button>
           </Link>
         </>
@@ -182,8 +166,11 @@ const Cart = ({
               <div className="mt-6">{checkoutButton()}</div>
             </section>
           </div>
+          
+          {wishlist && wishProduct.length > 0 && (
+            <ProductsList data={wishProduct} title={"My favourites"} />
+        )}
 
-          {showWishlistItems()}
         </div>
       </div>
     </Layout>
@@ -192,7 +179,7 @@ const Cart = ({
 const mapStateToProps = (state) => ({
   isAuthenticated: state.Auth.isAuthenticated,
   items: state.Cart.items,
-  wishlist_items: state.Wishlist.items,
+  wishlist: state.Wishlist.items,
   amount: state.Cart.amount,
   compare_amount: state.Cart.compare_amount,
   total_items: state.Cart.total_items,
@@ -205,5 +192,5 @@ export default connect(mapStateToProps, {
   remove_item,
   update_item,
   setAlert,
-  remove_wishlist_item,
+  get_wishlist_items,
 })(Cart);

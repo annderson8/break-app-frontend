@@ -52,7 +52,7 @@ export const get_products_by_arrival = () => async dispatch => {
     };
 
     try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/product/get-products?sortBy=date_created&order=desc&limit=3`, config);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/product/get-products?sortBy=date_created&order=desc&limit=4`, config);
     
         if (res.status === 200) {
             dispatch({
@@ -196,11 +196,12 @@ export const get_search_products = (search, category_id) => async dispatch => {
         }
     };
 
+    console.log("entro a funcion ", category_id);
     const body = JSON.stringify({
         search,
         category_id
     });
-
+    
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/product/search`, body, config);
 

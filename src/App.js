@@ -46,7 +46,7 @@ function App() {
             element={<ResetPasswordConfirm />}
           />
 
-          <Route exact path="/shop" element={<Shop />} />
+          {/* <Route exact path="/shop" element={<Shop />} /> */}
           <Route exact path="/product/:productId" element={<ProductDetail />} />
           <Route exact path="/search" element={<Search />} />
 

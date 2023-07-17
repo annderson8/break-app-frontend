@@ -30,7 +30,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = ['apps.user', 'apps.user_profile']
+PROJECT_APPS = ['apps.user', 'apps.user_profile', 'import_export' ]
 ECOMMERCE_APPS = ['apps.category', 'apps.product', 'apps.cart', 'apps.shipping', 'apps.orders', 'apps.payment', 'apps.coupons', 'apps.wishlist', 'apps.reviews', 'apps.place' ]
 THIRD_PARTY_APPS = [
     'corsheaders',
@@ -206,12 +206,6 @@ DJOSER = {
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
 }
-
-BT_ENVIRONMENT = os.environ.get('BT_ENVIRONMENT')
-BT_MERCHANT_ID = os.environ.get('BT_MERCHANT_ID')
-BT_PUBLIC_KEY = os.environ.get('BT_PUBLIC_KEY')
-BT_PRIVATE_KEY = os.environ.get('BT_PRIVATE_KEY')
-
 
 # Stripe settings
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
