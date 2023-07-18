@@ -18,12 +18,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Navbar({
-  isAuthenticated,
-  user,
-  logout,
-  total_items,
-}) {
+function Navbar({ isAuthenticated, user, logout, total_items }) {
   const [redirect, setRedirect] = useState(false);
 
   const logoutHandler = () => {
@@ -236,6 +231,6 @@ const mapStateToProps = (state) => ({
   total_items: state.Cart.total_items,
 });
 
-export default connect(mapStateToProps, {
-  logout,
-})(Navbar);
+const ConnectedNavbar = connect(mapStateToProps, { logout })(Navbar);
+
+export { ConnectedNavbar as Navbar };
