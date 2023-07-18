@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Navbar from "../components/navigation/Navbar";
 import { Footer } from "../components/navigation/Footer";
+import Navbar from "../components/navigation/Navbar";
 
 import { check_authenticated, load_user, refresh } from "../redux/actions/auth";
 
