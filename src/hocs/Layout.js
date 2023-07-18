@@ -4,13 +4,15 @@ import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Navbar from "../components/navigation/Navbar";
+import { Footer } from "../components/navigation/Footer";
+
 import { check_authenticated, load_user, refresh } from "../redux/actions/auth";
 
 import { get_items, get_total, get_item_total } from "../redux/actions/cart";
 import { get_user_profile } from "../redux/actions/profile";
 
-import { Footer } from "../components/navigation/Footer";
-import Navbar from "../components/navigation/Navbar";
+
 
 const Layout = (props) => {
   useEffect(() => {
