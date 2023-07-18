@@ -10,9 +10,9 @@ ENVIRONMENT = env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DOMAIN = os.environ.get('DOMAIN')
+DOMAIN = env('DOMAIN')
 
-SECRET_KEY = os.environ.get('SECRETE_KEY')
+SECRET_KEY = env('SECRETE_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
@@ -222,9 +222,9 @@ DJOSER = {
 }
 
 # Stripe settings
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 
 AUTH_USER_MODEL = "user.UserAccount"
 

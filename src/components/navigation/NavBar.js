@@ -1,12 +1,10 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Navigate } from "react-router";
 import { connect } from "react-redux";
 import Alert from "../alert";
 import { logout } from "../../redux/actions/auth";
-import { get_categories } from "../../redux/actions/categories";
-import { get_search_products } from "../../redux/actions/products";
 
 import {
   Bars3Icon,
@@ -15,7 +13,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 import logo_break from "../../logo_break.svg";
-import SearchBox from "./SearchBox";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -25,35 +22,9 @@ function Navbar({
   isAuthenticated,
   user,
   logout,
-  get_categories,
-  categories,
-  get_search_products,
   total_items,
 }) {
   const [redirect, setRedirect] = useState(false);
-  const [render, setRender] = useState(false);
-  const [formData, setFormData] = useState({
-    category_id: 0,
-    search: "",
-  });
-  const { category_id, search } = formData;
-
-  useEffect(() => {
-    get_categories();
-  }, []);
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    get_search_products(search, category_id);
-    setRender(!render);
-  };
-
-  if (render) {
-    return <Navigate to="/search" />;
-  }
 
   const logoutHandler = () => {
     logout();
@@ -262,12 +233,9 @@ function Navbar({
 const mapStateToProps = (state) => ({
   isAuthenticated: state.Auth.isAuthenticated,
   user: state.Auth.user,
-  categories: state.Categories.categories,
   total_items: state.Cart.total_items,
 });
 
 export default connect(mapStateToProps, {
   logout,
-  get_categories,
-  get_search_products,
 })(Navbar);

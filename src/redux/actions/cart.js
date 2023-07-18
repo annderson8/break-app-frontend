@@ -67,7 +67,7 @@ export const add_item = product => async dispatch => {
 
         let shouldAddItem = true;
 
-        cart.map(item => {
+        cart.forEach(item => {
             if (product.id.toString() === item.product.id.toString()) {
                 shouldAddItem = false;
             }
@@ -160,7 +160,7 @@ export const get_total = () => async dispatch => {
         if (localStorage.getItem('cart')) {
             cart = JSON.parse(localStorage.getItem('cart'));
 
-            cart.map(item => {
+            cart.forEach(item => {
                 total += parseFloat(item.product.price) * parseFloat(item.count);
                 compare_total += parseFloat(item.product.compare_price) * parseFloat(item.count);
             });
@@ -253,7 +253,7 @@ export const update_item = (item, count) => async dispatch => {
         if (localStorage.getItem('cart')) {
             cart = JSON.parse(localStorage.getItem('cart'));
 
-            cart.map((cart_item, index) => {
+            cart.forEach((cart_item, index) => {
                 if (cart_item.product.id.toString() === item.product.id.toString()) {
                     cart[index].count = parseInt(count);
                 }
@@ -308,7 +308,7 @@ export const remove_item = item => async dispatch => {
         if (localStorage.getItem('cart')) {
             cart = JSON.parse(localStorage.getItem('cart'));
 
-            cart.map(cart_item => {
+            cart.forEach(cart_item => {
                 if (cart_item.product.id.toString() !== item.product.id.toString()) {
                     new_cart.push(cart_item);
                 }
@@ -370,7 +370,7 @@ export const synch_cart = () => async dispatch => {
     if (localStorage.getItem('cart')) {
         let cart = JSON.parse(localStorage.getItem('cart'));
 
-        cart.map(cart_item => {
+        cart.forEach(cart_item => {
             const item = {};
             item.product_id = cart_item.product.id;
             item.count = cart_item.count;
