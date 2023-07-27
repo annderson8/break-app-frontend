@@ -1,10 +1,10 @@
-import Layout from "../../hocs/Layout";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../../redux/actions/auth";
 import { RotatingLines } from "react-loader-spinner";
 import { Navigate } from "react-router";
+import Layout from "../../components/hocs/Layout";
 
 import logo_break from "../../logo_break.svg";
 

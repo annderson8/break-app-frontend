@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { signup } from "../../redux/actions/auth";
 
-import Layout from "../../hocs/Layout";
+import Layout from "../../components/hocs/Layout";
 import logo_break from "../../logo_break.svg";
 
 const Signup = ({ signup }) => {

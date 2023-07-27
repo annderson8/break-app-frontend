@@ -1,6 +1,6 @@
-import Layout from "../../hocs/Layout";
 import { Fragment, useState, useEffect } from "react";
-import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
+import { Dialog, Disclosure, Transition } from "@headlessui/react";
+import Layout from "../../components/hocs/Layout";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import {
   FunnelIcon,

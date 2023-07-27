@@ -1,6 +1,6 @@
-import Layout from "../../hocs/Layout";
 import { useState } from "react";
 import { connect } from "react-redux";
+import Layout from "../../components/hocs/Layout";
 import { setAlert } from "../../redux/actions/alert";
 import {
   remove_item,

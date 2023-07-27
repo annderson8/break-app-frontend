@@ -1,7 +1,7 @@
-import Layout from "../../hocs/Layout";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Layout from "../../components/hocs/Layout";
 import {
   add_wishlist_item,
   get_wishlist_items,

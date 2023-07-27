@@ -1,10 +1,10 @@
-import Layout from "../../hocs/Layout";
 import { useParams } from "react-router";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { activate } from "../../redux/actions/auth";
 import { Navigate } from "react-router";
 
+import Layout from "../../components/hocs/Layout";
 import { RotatingLines } from "react-loader-spinner";
 
 const Activate = ({ activate, loading }) => {

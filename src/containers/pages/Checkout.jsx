@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { TicketIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 
-import Layout from "../../hocs/Layout";
+import Layout from "../../components/hocs/Layout";
 
 import { setAlert } from "../../redux/actions/alert";
 import { check_coupon } from "../../redux/actions/coupons";

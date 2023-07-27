@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import Layout from "../hocs/Layout";
+import Layout from "../components/hocs/Layout";
 import { get_products } from "../redux/actions/products";
 import { get_wishlist_items } from "../redux/actions/wishlist";
 

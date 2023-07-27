@@ -1,10 +1,9 @@
-import Layout from "../../hocs/Layout";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { reset_password_confirm } from "../../redux/actions/auth";
 import { RotatingLines } from "react-loader-spinner";
 import { Navigate, useParams } from "react-router";
+import Layout from "../../components/hocs/Layout";
 
 const ResetPasswordConfirm = ({ reset_password_confirm, loading }) => {
   const params = useParams();
