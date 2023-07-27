@@ -38,7 +38,7 @@ const Shop = ({
     get_categories();
     get_products();
     window.scrollTo(0, 0);
-  }, []);
+  }, [get_categories, get_products]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -147,10 +147,7 @@ const Shop = ({
                     className="mt-4 border-t border-gray-200"
                   >
                     <h3 className="sr-only">Categories</h3>
-                    <ul
-                      role="list"
-                      className="font-medium text-gray-900 px-2 py-3"
-                    >
+                    <ul className="font-medium text-gray-900 px-2 py-3">
                       {categories &&
                         categories !== null &&
                         categories !== undefined &&
@@ -193,7 +190,7 @@ const Shop = ({
                               </div>
                             );
 
-                            category.sub_categories.map((sub_category) => {
+                            category.sub_categories.forEach((sub_category) => {
                               result.push(
                                 <div
                                   key={sub_category.id}
@@ -212,7 +209,6 @@ const Shop = ({
                                 </div>
                               );
                             });
-
                             return result;
                           }
                         })}
@@ -398,10 +394,7 @@ const Shop = ({
                 {/* Filters */}
                 <form onSubmit={(e) => onSubmit(e)} className="hidden lg:block">
                   <h3 className="sr-only">Categories</h3>
-                  <ul
-                    role="list"
-                    className="text-sm font-medium text-gray-900 space-y-4 pb-6 border-b border-gray-200"
-                  >
+                  <ul className="text-sm font-medium text-gray-900 space-y-4 pb-6 border-b border-gray-200">
                     {categories &&
                       categories !== null &&
                       categories !== undefined &&
@@ -444,7 +437,7 @@ const Shop = ({
                             </div>
                           );
 
-                          category.sub_categories.map((sub_category) => {
+                          category.sub_categories.forEach((sub_category) => {
                             result.push(
                               <div
                                 key={sub_category.id}

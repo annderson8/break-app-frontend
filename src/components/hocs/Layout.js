@@ -23,7 +23,7 @@ const Layout = (props) => {
     props.get_total();
     props.get_item_total();
     props.get_user_profile();
-  }, []);
+  }, [props]);
 
   return (
     <div>

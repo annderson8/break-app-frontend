@@ -55,7 +55,7 @@ const ProductDetail = ({
     get_related_products(productId);
     get_wishlist_items();
     get_wishlist_item_total();
-  }, [productId]);
+  }, [productId, get_product, get_related_products,get_wishlist_items, get_wishlist_item_total ]);
 
   const [isPresent, setIsPresent] = useState(false);
 
@@ -75,7 +75,7 @@ const ProductDetail = ({
         setIsPresent(productIsInWishlist);
       }
     }
-  }, [wishlist]);
+  }, [wishlist, isAuthenticated, product]);
 
   const addToCart = async () => {
     if (

@@ -27,7 +27,7 @@ const NavbarDashboard = (props) => {
     props.check_authenticated();
     props.load_user();
     props.list_orders();
-  }, []);
+  }, [props]);
 
   const logoutHandler = () => {
     logout();

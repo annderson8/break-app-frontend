@@ -40,7 +40,7 @@ const DashboardPaymentDetail = ({
 
   useEffect(() => {
     get_order_detail(transaction_id);
-  }, [transaction_id]);
+  }, [transaction_id, get_order_detail]);
 
   if (!isAuthenticated) return <Navigate to="/" />;
 

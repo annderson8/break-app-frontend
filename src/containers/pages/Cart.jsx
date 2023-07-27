@@ -38,14 +38,14 @@ const Cart = ({
     get_items();
     get_total();
     get_item_total();
-  }, [render]);
+  }, [render, get_items, get_total,get_item_total ]);
 
 
   const [wishProduct, setWishProduct] = useState([]);
 
   useEffect(() => {
     get_wishlist_items();
-  }, []);
+  }, [get_wishlist_items]);
 
   useEffect(() => {
     setWishProduct( wishlist && wishlist.map(item => item.product))

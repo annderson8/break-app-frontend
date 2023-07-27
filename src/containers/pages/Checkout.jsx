@@ -55,6 +55,9 @@ const Checkout = ({
   check_coupon,
   coupon,
   clientSecret,
+  get_items,
+  get_total,
+  get_item_total,
 }) => {
   const [formData, setFormData] = useState({
     coupon_name: "",
@@ -68,7 +71,8 @@ const Checkout = ({
     get_items();
     get_total();
     get_item_total();
-  }, [render]);
+  }, [render,get_items, get_total,get_item_total]);
+
 
   const { coupon_name, shipping_id } = formData;
 
@@ -84,7 +88,7 @@ const Checkout = ({
     if (coupon && coupon !== null && coupon !== undefined)
       get_payment_total(coupon.name);
     else get_payment_total("default");
-  }, [coupon, render]);
+  }, [coupon, render, get_payment_total]);
 
   //Payments
 
@@ -104,7 +108,7 @@ const Checkout = ({
       };
       fetchData();
     }
-  }, [total_amount]);
+  }, [total_amount, coupon_name, shipping_id, process_payment_stripe]);
 
   const appearance = {
     theme: "flat",

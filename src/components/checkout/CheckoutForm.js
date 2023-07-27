@@ -39,7 +39,7 @@ const CheckoutFormForm = ({
           break;
       }
     });
-  }, [stripe]);
+  }, [stripe, clientSecret]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +49,6 @@ const CheckoutFormForm = ({
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-
-    console.log(e);
-
     setIsLoading(true);
 
     const { error } = await stripe.confirmPayment({
@@ -71,6 +68,9 @@ const CheckoutFormForm = ({
   const paymentElementOptions = {
     layout: "tabs",
     defaultCollapsed: false,
+    defaultValues: {
+      email: email
+    }
   };
 
   return (

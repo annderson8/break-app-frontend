@@ -13,7 +13,7 @@ import Activate from "./containers/auth/Activate";
 import ResetPassword from "./containers/auth/ResetPassword";
 import ResetPasswordConfirm from "./containers/auth/ResetPasswordConfirm";
 
-import Shop from "./containers/Shop";
+// import Shop from "./containers/Shop";
 import ProductDetail from "./containers/pages/productDetail";
 
 import Search from "./containers/pages/Search";
@@ -23,7 +23,7 @@ import ThankYou from "./containers/pages/ThankYou";
 import Dashboard from "./containers/pages/Dashboard";
 import DashboardPayments from "./containers/pages/DashboardPayments";
 import DashboardPaymentDetail from "./containers/pages/DashboardPaymentDetail";
-import DashboardProfile from "./containers/pages/DashboardProfile";
+// import DashboardProfile from "./containers/pages/DashboardProfile";
 
 function App() {
   return (

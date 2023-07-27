@@ -8,7 +8,6 @@ import {
   PlusSmallIcon,
 } from "@heroicons/react/24/solid";
 
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { get_categories } from "../../redux/actions/categories";
 import {
@@ -17,10 +16,6 @@ import {
 } from "../../redux/actions/products";
 import ProductCard from "../../components/product/ProductCard";
 import { prices } from "../../helpers/fixedPrices";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 const Search = ({
   get_categories,
@@ -46,7 +41,7 @@ const Search = ({
     get_categories();
     get_products();
     window.scrollTo(0, 0);
-  }, []);
+  }, [get_categories, get_products]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -80,14 +75,13 @@ const Search = ({
       searched_products !== undefined
     ) {
       searched_products.map((product, index) => {
-          return display.push(
-              <div key={index}>
-                  <ProductCard product={product}/>
-              </div>
-          );
+        return display.push(
+          <div key={index}>
+            <ProductCard product={product} />
+          </div>
+        );
       });
-    } 
-
+    }
 
     for (let i = 0; i < display.length; i += 3) {
       results.push(
@@ -155,10 +149,7 @@ const Search = ({
                     className="mt-4 border-t border-gray-200"
                   >
                     <h3 className="sr-only">Categories</h3>
-                    <ul
-                      role="list"
-                      className="font-medium text-gray-900 px-2 py-3"
-                    >
+                    <ul className="font-medium text-gray-900 px-2 py-3">
                       {categories &&
                         categories !== null &&
                         categories !== undefined &&
@@ -201,7 +192,7 @@ const Search = ({
                               </div>
                             );
 
-                            category.sub_categories.map((sub_category) => {
+                            category.sub_categories.forEach((sub_category) => {
                               result.push(
                                 <div
                                   key={sub_category.id}
@@ -382,11 +373,13 @@ const Search = ({
           <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="relative z-10 flex items-baseline justify-between pt-24 pb-6 border-b border-gray-200">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
-                Products
-                ({searched_products &&
-                searched_products !== null &&
-                searched_products !== undefined &&
-                searched_products.length})</h1>
+                Products (
+                {searched_products &&
+                  searched_products !== null &&
+                  searched_products !== undefined &&
+                  searched_products.length}
+                )
+              </h1>
 
               <div className="flex items-center">
                 <button
@@ -410,7 +403,6 @@ const Search = ({
                 <form onSubmit={(e) => onSubmit(e)} className="hidden lg:block">
                   <h3 className="sr-only">Categories</h3>
                   <ul
-                    role="list"
                     className="text-sm font-medium text-gray-900 space-y-4 pb-6 border-b border-gray-200"
                   >
                     {categories &&
@@ -455,7 +447,7 @@ const Search = ({
                             </div>
                           );
 
-                          category.sub_categories.map((sub_category) => {
+                          category.sub_categories.forEach((sub_category) => {
                             result.push(
                               <div
                                 key={sub_category.id}

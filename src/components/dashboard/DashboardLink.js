@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { CreditCardIcon, UserIcon } from "@heroicons/react/24/solid";
+import { CreditCardIcon } from "@heroicons/react/24/solid";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

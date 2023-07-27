@@ -10,11 +10,7 @@ const WishlistHeart = ({ addToWishlist, product, wishlist }) => {
       product !== null &&
       product !== undefined
     ) {
-      wishlist.map((item) => {
-        if (item.product.id.toString() === product.id.toString()) {
-          selected = true;
-        }
-      });
+      selected = wishlist.some((item) => item.product.id.toString() === product.id.toString());
     }
     if (selected) {
         return (

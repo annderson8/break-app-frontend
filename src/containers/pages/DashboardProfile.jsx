@@ -42,7 +42,7 @@ const DashboardProfile = ({
     get_total();
     get_item_total();
     list_orders();
-  }, []);
+  }, [get_items,get_total, get_item_total, list_orders ]);
 
   const [formData, setFormData] = useState({
     address_line_1: "",

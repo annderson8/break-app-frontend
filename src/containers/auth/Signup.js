@@ -11,7 +11,7 @@ const Signup = ({ signup }) => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [accountCreated, setAccountCreated] = useState(false);
+  // const [accountCreated, setAccountCreated] = useState(false);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -29,7 +29,7 @@ const Signup = ({ signup }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     signup(first_name, last_name, email, password, re_password);
-    setAccountCreated(true);
+    // setAccountCreated(true);
     window.scrollTo(0, 0);
   };
 

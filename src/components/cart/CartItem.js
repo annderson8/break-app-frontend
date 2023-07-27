@@ -28,7 +28,7 @@ const CartItem = ({
 
   useEffect(() => {
     if (count) setFormData({ ...formData, item_count: count });
-  }, [count]);
+  }, [count, formData ]);
 
   const onChange = (e) => {
     setLoading(true);

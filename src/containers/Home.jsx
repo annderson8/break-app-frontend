@@ -24,7 +24,7 @@ const Home = ({
     window.scrollTo(0, 0);
     get_products();
     
-  }, []);
+  }, [get_products]);
 
   useEffect(() => {
     if (products) {
@@ -36,7 +36,7 @@ const Home = ({
     if (isAuthenticated) {
       get_wishlist_items();
     }
-  }, []);
+  }, [isAuthenticated, get_wishlist_items]);
   
   useEffect(() => {
     if (wishlist) {
@@ -61,7 +61,7 @@ const Home = ({
         setIsSearch(false);
       }
     }
-  }, [items, searchByTitle]);
+  }, [items, searchByTitle, products]);
 
   return (
     <Layout>

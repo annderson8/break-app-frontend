@@ -20,7 +20,7 @@ const DashboardPayments = ({
   useEffect(() => {
     list_orders();
     get_place_options();
-  }, []);
+  }, [list_orders,get_place_options ]);
 
   if (!isAuthenticated) return <Navigate to="/" />;
 

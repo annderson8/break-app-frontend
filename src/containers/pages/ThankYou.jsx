@@ -15,7 +15,7 @@ const ThankYou = ({
 
     useEffect(() => {
         reset()
-    }, [])
+    }, [reset])
 
     const location = useLocation();
 
@@ -36,7 +36,7 @@ const ThankYou = ({
 				"Order canceled -- continue to shop around and checkout when you're ready."
 			);
 		}
-	}, []);
+	}, [location]);
 
     // if(!isAuthenticated)
     //     return <Navigate to='/' />;

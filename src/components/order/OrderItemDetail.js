@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const OrderItemDetail = ({
@@ -25,17 +25,16 @@ const OrderItemDetail = ({
   const [place, setPlace] = useState(item.place.id);
   const [time, setTime] = useState(item.time_delivery);
 
-  const handlerSelectedPlace = (e) => {
+  const handlerSelectedPlace = useCallback((e) => {
     if (places) {
       const selectedPlace = places.find((p) => p.id === Number(e));
       setDeliveryTimes(selectedPlace ? selectedPlace.times : []);
     }
-  };
-
+  }, [places, setDeliveryTimes]);
+  
   useEffect(() => {
     handlerSelectedPlace(place);
-  }, []);
-
+  }, [place, handlerSelectedPlace]);
 
   const [data, setData] = useState([]);
   const handleChange = (name, value, id) => {
