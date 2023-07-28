@@ -28,8 +28,11 @@ import {
 import CartItem from "../../components/cart/CartItem";
 import CheckoutForm from "../../components/checkout/CheckoutForm";
 
+
+const pk_stripe = toString(process.env.PUBLIC_KEY_STRIPE);
+
 const stripePromise = loadStripe(
-  process.env.PUBLIC_KEY_STRIPE
+  pk_stripe
 );
 
 const Checkout = ({
