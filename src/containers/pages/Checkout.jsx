@@ -29,7 +29,7 @@ import CartItem from "../../components/cart/CartItem";
 import CheckoutForm from "../../components/checkout/CheckoutForm";
 
 const stripePromise = loadStripe(
-  "pk_test_51NQ46oJG3NL7E2w0pNoWwTY8JUsyKIBuMf1A8J07fkq5Ofvdra4m3FDKAp8MhipFg2wcs4IfeElADFT7QPO6Mo4f008rLaWjsu"
+  process.env.PUBLIC_KEY_STRIPE
 );
 
 const Checkout = ({
